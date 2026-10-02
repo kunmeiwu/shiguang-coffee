@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#1A0F0A">
+<meta name="description" content="拾光咖啡 · 秋日新品：焦糖海盐拿铁 / 桂花冷萃 / 黑巧摩卡。秋分限定，第二杯半价。">
+<title>拾光咖啡 · 秋日新品</title>
+<style>
+  :root{
+    --bg-deep:#150C08;
+    --bg:#1F120C;
+    --card:#2C1B12;
+    --card-2:#372218;
+    --line:rgba(201,162,39,.22);
+    --gold:#C9A227;
+    --gold-lt:#E3C572;
+    --caramel:#E07A3F;
+    --cream:#F5E9DA;
+    --text:#F2E4D4;
+    --text-dim:#B99B7E;
+    --text-mute:#8A6E56;
+    --radius:20px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg-deep);
+    color:var(--text);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  #page{
+    max-width:750px;margin:0 auto;position:relative;
+    background:var(--bg);
+    box-shadow:0 0 80px rgba(0,0,0,.8);
+    overflow:hidden;
+  }
+
+  /* ==================== 封面 ==================== */
+  .hero{
+    position:relative;height:100vh;height:100svh;min-height:600px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:
+      radial-gradient(120% 80% at 50% 18%, rgba(224,122,63,.20) 0%, rgba(224,122,63,0) 58%),
+      radial-gradient(90% 60% at 50% 100%, rgba(201,162,39,.14) 0%, rgba(201,162,39,0) 60%),
+      linear-gradient(178deg,#2A1710 0%,#1F120C 46%,#150C08 100%);
+    padding:0 30px;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:radial-gradient(rgba(245,233,218,.045) 1px,transparent 1px);
+    background-size:22px 22px;
+  }
+  .hero-cup{
+    width:min(60vw,290px);height:auto;
+    filter:drop-shadow(0 26px 50px rgba(0,0,0,.62));
+    animation:float 6.5s ease-in-out infinite;
+    position:relative;z-index:2;
+  }
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+
+  .hero-eyebrow{
+    margin-top:34px;font-size:13px;letter-spacing:.42em;text-indent:.42em;
+    color:var(--gold);text-transform:uppercase;position:relative;z-index:2;
+  }
+  .hero-title{
+    margin-top:12px;
+    font-size:clamp(40px,12.5vw,62px);line-height:1.12;font-weight:800;
+    letter-spacing:.1em;text-indent:.1em;
+    background:linear-gradient(174deg,#FFF6E7 0%,#E3C572 48%,#C9A227 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    position:relative;z-index:2;
+  }
+  .hero-sub{
+    margin-top:16px;font-size:15px;color:var(--text-dim);letter-spacing:.16em;
+    position:relative;z-index:2;text-align:center;
+  }
+  .hero-rule{
+    width:56px;height:1px;margin:24px auto 0;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);
+    position:relative;z-index:2;
+  }
+  .hero-badge{
+    margin-top:20px;display:inline-flex;align-items:center;gap:8px;
+    padding:9px 20px;border-radius:999px;
+    border:1px solid var(--line);
+    background:rgba(201,162,39,.08);
+    font-size:13px;color:var(--gold-lt);letter-spacing:.06em;
+    position:relative;z-index:2;
+  }
+  .hero-badge i{width:6px;height:6px;border-radius:50%;background:var(--caramel);
+    box-shadow:0 0 10px var(--caramel);animation:pulse 1.8s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+  .scroll-hint{
+    position:absolute;bottom:calc(24px + env(safe-area-inset-bottom));left:50%;
+    transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;
+    align-items:center;gap:7px;color:var(--text-mute);font-size:11px;letter-spacing:.3em;
+  }
+  .scroll-hint svg{animation:bounce 1.9s ease-in-out infinite}
+  @keyframes bounce{0%,100%{transform:translateY(0);opacity:.45}50%{transform:translateY(7px);opacity:1}}
+
+  /* ==================== 通用 ==================== */
+  section{position:relative;padding:0 24px}
+  .sec-head{text-align:center;padding:62px 0 34px}
+  .sec-head .en{
+    font-size:11px;letter-spacing:.4em;text-indent:.4em;color:var(--text-mute);
+    text-transform:uppercase;
+  }
+  .sec-head h2{
+    margin-top:10px;font-size:25px;font-weight:700;letter-spacing:.14em;text-indent:.14em;
+    color:var(--cream);
+  }
+  .sec-head .bar{
+    width:38px;height:2px;margin:16px auto 0;border-radius:2px;
+    background:linear-gradient(90deg,var(--caramel),var(--gold));
+  }
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.2,.7,.3,1),transform .8s cubic-bezier(.2,.7,.3,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ==================== 新品卡片 ==================== */
+  .cards{display:flex;flex-direction:column;gap:20px;padding-bottom:14px}
+  .card{
+    position:relative;border-radius:var(--radius);overflow:hidden;
+    background:linear-gradient(160deg,var(--card-2) 0%,var(--card) 62%);
+    border:1px solid var(--line);
+    box-shadow:0 18px 40px -18px rgba(0,0,0,.85);
+    transition:transform .35s cubic-bezier(.2,.7,.3,1);
+  }
+  .card:active{transform:scale(.982)}
+  .card-top{
+    position:relative;height:196px;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(70% 90% at 50% 34%,var(--glow) 0%,rgba(0,0,0,0) 72%);
+  }
+  .card-top svg.cup{width:154px;height:154px;filter:drop-shadow(0 14px 26px rgba(0,0,0,.45))}
+  .tag{
+    position:absolute;top:14px;left:14px;z-index:3;
+    font-size:11px;letter-spacing:.16em;padding:5px 13px;border-radius:999px;
+    background:linear-gradient(120deg,var(--tag-a),var(--tag-b));
+    color:#231207;font-weight:700;
+  }
+  .idx{
+    position:absolute;top:6px;right:16px;z-index:3;
+    font-size:56px;font-weight:800;line-height:1;
+    color:rgba(245,233,218,.055);font-family:Georgia,serif;
+  }
+  .card-body{padding:4px 22px 24px}
+  .card-name{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .card-name h3{font-size:20px;font-weight:700;color:var(--cream);letter-spacing:.05em}
+  .card-name .en{font-size:11px;color:var(--text-mute);letter-spacing:.1em;text-transform:uppercase}
+  .card-desc{margin-top:10px;font-size:13.5px;line-height:1.85;color:var(--text-dim)}
+  .card-foot{
+    margin-top:16px;padding-top:14px;border-top:1px dashed rgba(201,162,39,.18);
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .price{font-size:13px;color:var(--text-mute);letter-spacing:.05em}
+  .price b{font-size:24px;color:var(--gold-lt);font-weight:700;font-family:Georgia,serif;margin-right:1px}
+  .price b i{font-size:14px;font-style:normal;margin-right:1px}
+  .notes{display:flex;gap:7px}
+  .notes span{
+    font-size:11px;padding:4px 10px;border-radius:6px;
+    background:rgba(245,233,218,.055);color:var(--text-dim);
+    border:1px solid rgba(245,233,218,.07);
+  }
+
+  /* ==================== 门店 ==================== */
+  .store{
+    margin:0 24px 8px;border-radius:var(--radius);overflow:hidden;
+    background:linear-gradient(165deg,var(--card-2),var(--card));
+    border:1px solid var(--line);
+    box-shadow:0 18px 40px -18px rgba(0,0,0,.85);
+  }
+  .map{height:150px;position:relative;background:linear-gradient(160deg,#241610,#1A1009)}
+  .map svg{width:100%;height:100%;display:block}
+  .store-body{padding:22px}
+  .store-name{font-size:17px;font-weight:700;color:var(--cream);letter-spacing:.06em}
+  .store-name small{display:block;font-size:11px;color:var(--text-mute);font-weight:400;margin-top:3px;letter-spacing:.18em}
+  .rows{margin-top:16px;display:flex;flex-direction:column;gap:13px}
+  .row{display:flex;align-items:flex-start;gap:12px;font-size:13.5px;color:var(--text-dim)}
+  .row .ico{
+    flex:0 0 30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+    background:rgba(201,162,39,.1);border:1px solid var(--line);
+  }
+  .row .ico svg{width:15px;height:15px}
+  .row b{color:var(--text);font-weight:600}
+  .row .sub{font-size:12px;color:var(--text-mute);margin-top:2px}
+
+  /* ==================== 二维码 ==================== */
+  .qr-wrap{text-align:center;padding:56px 24px calc(46px + env(safe-area-inset-bottom))}
+  .qr-card{
+    display:inline-block;padding:18px;border-radius:22px;
+    background:linear-gradient(160deg,#FBF3E7,#EFE0CB);
+    box-shadow:0 20px 46px -16px rgba(0,0,0,.85),0 0 0 1px rgba(201,162,39,.3) inset;
+  }
+  .qr-card img{display:block;width:168px;height:168px}
+  .qr-title{margin-top:20px;font-size:15px;color:var(--cream);letter-spacing:.1em}
+  .qr-sub{margin-top:8px;font-size:12.5px;color:var(--text-mute);letter-spacing:.05em}
+  .qr-sub b{color:var(--gold-lt);font-weight:600}
+
+  .footer{margin-top:34px;font-size:11px;color:#5C4634;letter-spacing:.1em;line-height:2}
+  .footer .rule{width:40px;height:1px;margin:0 auto 18px;background:rgba(201,162,39,.25)}
+</style>
+</head>
+<body>
+<div id="page">
+
+  <!-- ==================== 封面: 俯视心形拉花 ==================== -->
+  <header class="hero">
+    <svg class="hero-cup" viewBox="0 0 240 240" role="img" aria-label="心形拉花拿铁">
+      <defs>
+        <radialGradient id="hSaucer" cx="44%" cy="38%">
+          <stop offset="0" stop-color="#FCF6EC"/><stop offset="1" stop-color="#D3C0A6"/>
+        </radialGradient>
+        <linearGradient id="hRim" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#FFFDF9"/><stop offset=".55" stop-color="#F0E4D1"/><stop offset="1" stop-color="#C6B096"/>
+        </linearGradient>
+        <radialGradient id="hCoffee" cx="40%" cy="32%" r="72%">
+          <stop offset="0" stop-color="#AE7444"/><stop offset=".55" stop-color="#7E4B22"/><stop offset="1" stop-color="#3A1F0E"/>
+        </radialGradient>
+        <linearGradient id="hArt" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#FFFDF8"/><stop offset="1" stop-color="#E8D6BC"/>
+        </linearGradient>
+        <radialGradient id="hGlow" cx="50%" cy="50%">
+          <stop offset="0" stop-color="#E07A3F" stop-opacity=".46"/>
+          <stop offset="1" stop-color="#E07A3F" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <circle cx="120" cy="118" r="118" fill="url(#hGlow)"/>
+      <ellipse cx="120" cy="206" rx="84" ry="13" fill="#000" opacity=".38"/>
+      <circle cx="120" cy="122" r="104" fill="url(#hSaucer)"/>
+      <circle cx="120" cy="122" r="90" fill="#F6EDE0" opacity=".55"/>
+      <circle cx="120" cy="118" r="82" fill="url(#hRim)"/>
+      <circle cx="120" cy="118" r="73" fill="#B9A488"/>
+      <circle cx="120" cy="118" r="70" fill="url(#hCoffee)"/>
+      <circle cx="120" cy="118" r="69" fill="none" stroke="#B8845633" stroke-width="2"/>
+
+      <!-- 心形拉花 -->
+      <path d="M120 154 C 94 133, 82 120, 82 105 C 82 92, 91 83, 103 83 C 111 83, 117 88, 120 95 C 123 88, 129 83, 137 83 C 149 83, 158 92, 158 105 C 158 120, 146 133, 120 154 Z"
+            fill="url(#hArt)"/>
+      <path d="M120 100 C 112 106, 102 114, 100 124" stroke="#6B3F1D" stroke-width="2.2" fill="none" opacity=".28" stroke-linecap="round"/>
+      <ellipse cx="86" cy="84" rx="14" ry="8" fill="#FFF" opacity=".14" transform="rotate(-34 86 84)"/>
+      <ellipse cx="120" cy="118" rx="62" ry="62" fill="#FFF" opacity=".035"/>
+    </svg>
+
+    <div class="hero-eyebrow">Autumn Collection</div>
+    <h1 class="hero-title">秋日新品</h1>
+    <div class="hero-rule"></div>
+    <p class="hero-sub">三杯暖意 &nbsp;敬这渐凉的季节</p>
+    <div class="hero-badge"><i></i>秋分限定 &nbsp;·&nbsp; 第二杯半价</div>
+
+    <div class="scroll-hint">
+      <span>下滑</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+  </header>
+
+  <!-- ==================== 三款新品 ==================== -->
+  <section>
+    <div class="sec-head reveal">
+      <div class="en">New Arrivals</div>
+      <h2>三款新品</h2>
+      <div class="bar"></div>
+    </div>
+
+    <div class="cards">
+
+      <!-- 01 焦糖海盐拿铁 · 叶形拉花 -->
+      <article class="card reveal" style="--glow:rgba(224,122,63,.26);--tag-a:#E9B96A;--tag-b:#C9A227">
+        <div class="card-top">
+          <span class="tag">新 品</span>
+          <span class="idx">01</span>
+          <svg class="cup" viewBox="0 0 200 200" aria-hidden="true">
+            <defs>
+              <radialGradient id="c1Saucer" cx="44%" cy="38%"><stop offset="0" stop-color="#FBF3E6"/><stop offset="1" stop-color="#D6C3A6"/></radialGradient>
+              <linearGradient id="c1Rim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFDF9"/><stop offset="1" stop-color="#C9B296"/></linearGradient>
+              <radialGradient id="c1Coffee" cx="40%" cy="32%" r="72%"><stop offset="0" stop-color="#B87A45"/><stop offset=".55" stop-color="#84501F"/><stop offset="1" stop-color="#3E2110"/></radialGradient>
+              <linearGradient id="c1Art" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFCF6"/><stop offset="1" stop-color="#E6D2B4"/></linearGradient>
+            </defs>
+            <ellipse cx="100" cy="172" rx="64" ry="10" fill="#000" opacity=".34"/>
+            <circle cx="100" cy="102" r="86" fill="url(#c1Saucer)"/>
+            <circle cx="100" cy="99" r="70" fill="url(#c1Rim)"/>
+            <circle cx="100" cy="99" r="62" fill="#B9A488"/>
+            <circle cx="100" cy="99" r="59" fill="url(#c1Coffee)"/>
+            <!-- 叶形拉花 (rosetta) -->
+            <path d="M100 52 C 128 80, 130 116, 100 148 C 70 116, 72 80, 100 52 Z" fill="url(#c1Art)"/>
+            <path d="M100 62 V 143" stroke="#5C3317" stroke-width="2.6" stroke-linecap="round" opacity=".85"/>
+            <g stroke="#5C3317" stroke-width="2" fill="none" stroke-linecap="round" opacity=".62">
+              <path d="M100 74 C 112 79, 119 87, 123 97"/>
+              <path d="M100 90 C 114 95, 122 103, 126 113"/>
+              <path d="M100 106 C 112 111, 118 119, 121 129"/>
+              <path d="M100 74 C 88 79, 81 87, 77 97"/>
+              <path d="M100 90 C 86 95, 78 103, 74 113"/>
+              <path d="M100 106 C 88 111, 82 119, 79 129"/>
+            </g>
+            <!-- 焦糖酱 -->
+            <path d="M62 108 C 74 118, 68 132, 76 140" stroke="#D98A3A" stroke-width="3" fill="none" opacity=".55" stroke-linecap="round"/>
+            <!-- 海盐 -->
+            <g fill="#FFFDF8" opacity=".8">
+              <circle cx="128" cy="120" r="1.8"/><circle cx="134" cy="128" r="1.4"/><circle cx="122" cy="132" r="1.5"/>
+            </g>
+            <ellipse cx="72" cy="72" rx="12" ry="7" fill="#FFF" opacity=".16" transform="rotate(-34 72 72)"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <div class="card-name"><h3>焦糖海盐拿铁</h3><span class="en">Salted Caramel Latte</span></div>
+          <p class="card-desc">深烘浓缩撞上现熬焦糖酱，一撮海盐收尾。甜与咸在舌尖打了个照面，然后一起沉进奶泡里。</p>
+          <div class="card-foot">
+            <div class="price"><b><i>¥</i>32</b> / 中杯</div>
+            <div class="notes"><span>热饮</span><span>可少糖</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 02 桂花冷萃 · 玻璃杯 -->
+      <article class="card reveal" style="--glow:rgba(201,162,39,.24);--tag-a:#EFD98F;--tag-b:#C9A227">
+        <div class="card-top">
+          <span class="tag">限 定</span>
+          <span class="idx">02</span>
+          <svg class="cup" viewBox="0 0 200 200" aria-hidden="true">
+            <defs>
+              <linearGradient id="c2Glass" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#FFFFFF" stop-opacity=".2"/>
+                <stop offset=".2" stop-color="#FFFFFF" stop-opacity=".05"/>
+                <stop offset=".8" stop-color="#FFFFFF" stop-opacity=".05"/>
+                <stop offset="1" stop-color="#FFFFFF" stop-opacity=".22"/>
+              </linearGradient>
+              <linearGradient id="c2Brew" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#D2913F"/><stop offset="1" stop-color="#5E3512"/>
+              </linearGradient>
+              <g id="osm">
+                <circle cx="0" cy="-3.4" r="2.5"/><circle cx="3.4" cy="0" r="2.5"/>
+                <circle cx="0" cy="3.4" r="2.5"/><circle cx="-3.4" cy="0" r="2.5"/>
+                <circle cx="0" cy="0" r="1.9" fill="#B98A22"/>
+              </g>
+            </defs>
+            <ellipse cx="100" cy="182" rx="54" ry="9" fill="#000" opacity=".36"/>
+            <!-- 吸管 -->
+            <rect x="116" y="16" width="12" height="128" rx="6" fill="#E3C572" opacity=".9" transform="rotate(15 122 80)"/>
+            <rect x="116" y="16" width="12" height="16" rx="6" fill="#C9A227" transform="rotate(15 122 80)"/>
+            <!-- 杯身 -->
+            <path d="M64 42 h72 l-9 134 a9 9 0 0 1 -9 8 h-36 a9 9 0 0 1 -9 -8 z"
+                  fill="url(#c2Glass)" stroke="rgba(245,233,218,.34)" stroke-width="2" stroke-linejoin="round"/>
+            <!-- 咖啡液 -->
+            <path d="M70 80 h60 l-7 96 a7 7 0 0 1 -7 6 h-32 a7 7 0 0 1 -7 -6 z" fill="url(#c2Brew)"/>
+            <ellipse cx="100" cy="81" rx="30" ry="6" fill="#E2A854" opacity=".92"/>
+            <!-- 冰块 -->
+            <g fill="#FFFFFF">
+              <rect x="74" y="90" width="25" height="25" rx="6" opacity=".24" transform="rotate(-16 86 102)"/>
+              <rect x="99" y="110" width="22" height="22" rx="6" opacity=".18" transform="rotate(13 110 121)"/>
+              <rect x="78" y="132" width="20" height="20" rx="5" opacity=".14" transform="rotate(-9 88 142)"/>
+            </g>
+            <!-- 桂花 -->
+            <g fill="#EFD98F">
+              <use href="#osm" x="88" y="98"/>
+              <use href="#osm" x="112" y="130"/>
+              <use href="#osm" x="80" y="150" transform="scale(1)"/>
+              <use href="#osm" x="106" y="92"/>
+              <use href="#osm" x="94" y="164"/>
+            </g>
+            <path d="M96 118 C 106 112, 118 112, 126 118" stroke="#EFD98F" stroke-width="2.2" fill="none" opacity=".45" stroke-linecap="round"/>
+            <!-- 高光 -->
+            <path d="M70 52 L64 170" stroke="#FFF" stroke-width="4" opacity=".1" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <div class="card-name"><h3>桂花冷萃</h3><span class="en">Osmanthus Cold Brew</span></div>
+          <p class="card-desc">12 小时低温慢萃，兑入现熬桂花蜜。清冽里浮着一层秋天，喝到最后一口都还是香的。</p>
+          <div class="card-foot">
+            <div class="price"><b><i>¥</i>30</b> / 中杯</div>
+            <div class="notes"><span>冰饮</span><span>每日限量</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 03 黑巧摩卡 · 漩涡 -->
+      <article class="card reveal" style="--glow:rgba(120,72,44,.32);--tag-a:#D8A97C;--tag-b:#8B5A2B">
+        <div class="card-top">
+          <span class="tag">热 卖</span>
+          <span class="idx">03</span>
+          <svg class="cup" viewBox="0 0 200 200" aria-hidden="true">
+            <defs>
+              <radialGradient id="c3Saucer" cx="44%" cy="38%"><stop offset="0" stop-color="#FBF3E6"/><stop offset="1" stop-color="#D2BE9F"/></radialGradient>
+              <linearGradient id="c3Rim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFDF9"/><stop offset="1" stop-color="#C4AC8E"/></linearGradient>
+              <radialGradient id="c3Coffee" cx="40%" cy="32%" r="72%"><stop offset="0" stop-color="#8C5729"/><stop offset=".5" stop-color="#5A3316"/><stop offset="1" stop-color="#210F05"/></radialGradient>
+              <linearGradient id="c3Art" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7E6CF"/><stop offset="1" stop-color="#D9B183"/></linearGradient>
+            </defs>
+            <ellipse cx="100" cy="172" rx="64" ry="10" fill="#000" opacity=".34"/>
+            <circle cx="100" cy="102" r="86" fill="url(#c3Saucer)"/>
+            <circle cx="100" cy="99" r="70" fill="url(#c3Rim)"/>
+            <circle cx="100" cy="99" r="62" fill="#B0997C"/>
+            <circle cx="100" cy="99" r="59" fill="url(#c3Coffee)"/>
+            <!-- 漩涡拉花 -->
+            <path d="M100 54 a45 45 0 1 1 -31 77 a34 34 0 1 0 25 -57"
+                  stroke="url(#c3Art)" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <path d="M100 70 a29 29 0 1 1 -20 50"
+                  stroke="url(#c3Art)" stroke-width="5.5" fill="none" stroke-linecap="round" opacity=".8"/>
+            <!-- 可可粉 -->
+            <g fill="#2E1709" opacity=".6">
+              <circle cx="66" cy="68" r="2.2"/><circle cx="76" cy="58" r="1.7"/><circle cx="136" cy="70" r="2.3"/>
+              <circle cx="144" cy="106" r="1.8"/><circle cx="62" cy="118" r="2.1"/><circle cx="118" cy="148" r="1.7"/>
+              <circle cx="84" cy="146" r="1.5"/><circle cx="148" cy="126" r="1.6"/>
+            </g>
+            <ellipse cx="72" cy="70" rx="12" ry="7" fill="#FFF" opacity=".14" transform="rotate(-34 72 70)"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <div class="card-name"><h3>黑巧摩卡</h3><span class="en">Dark Mocha</span></div>
+          <p class="card-desc">70% 可可与双份浓缩，厚得像一封写给冬天的信。上面那层可可粉，是它的邮票。</p>
+          <div class="card-foot">
+            <div class="price"><b><i>¥</i>34</b> / 中杯</div>
+            <div class="notes"><span>热饮</span><span>含咖啡因</span></div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ==================== 门店地址 ==================== -->
+  <section>
+    <div class="sec-head reveal">
+      <div class="en">Find Us</div>
+      <h2>门店地址</h2>
+      <div class="bar"></div>
+    </div>
+
+    <div class="store reveal">
+      <div class="map">
+        <svg viewBox="0 0 400 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <g fill="#2A1B12" stroke="rgba(201,162,39,.14)" stroke-width="1">
+            <rect x="-10" y="-10" width="130" height="70" rx="6"/>
+            <rect x="140" y="-10" width="150" height="60" rx="6"/>
+            <rect x="310" y="-10" width="110" height="80" rx="6"/>
+            <rect x="-10" y="80" width="110" height="90" rx="6"/>
+            <rect x="120" y="70" width="140" height="100" rx="6"/>
+            <rect x="290" y="90" width="130" height="80" rx="6"/>
+          </g>
+          <path d="M130 -10 L130 160" stroke="rgba(245,233,218,.10)" stroke-width="14"/>
+          <path d="M290 -10 L290 160" stroke="rgba(245,233,218,.10)" stroke-width="14"/>
+          <path d="M-10 65 L410 65" stroke="rgba(245,233,218,.07)" stroke-width="10"/>
+          <path d="M-10 78 L410 78" stroke="rgba(201,162,39,.10)" stroke-width="2" stroke-dasharray="10 9"/>
+          <circle cx="205" cy="88" r="26" fill="#E07A3F" opacity=".13"/>
+          <circle cx="205" cy="88" r="16" fill="#E07A3F" opacity=".2"/>
+          <path d="M205 66c-8.3 0-15 6.7-15 15 0 11 15 25 15 25s15-14 15-25c0-8.3-6.7-15-15-15z"
+                fill="#E07A3F" stroke="#FFD9B8" stroke-width="1.6"/>
+          <circle cx="205" cy="81" r="5.4" fill="#2A1710"/>
+        </svg>
+      </div>
+      <div class="store-body">
+        <div class="store-name">拾光咖啡 · 老街店<small>SHIGUANG COFFEE</small></div>
+        <div class="rows">
+          <div class="row">
+            <span class="ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </span>
+            <div>
+              <b>杭州市西湖区南山路 128 号 1F</b>
+              <div class="sub">地铁 1 号线龙翔桥站 B 口，步行约 400 米</div>
+            </div>
+          </div>
+          <div class="row">
+            <span class="ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+            </span>
+            <div>
+              <b>周一至周日 &nbsp;08:00 – 22:00</b>
+              <div class="sub">新品活动持续至 11 月 15 日</div>
+            </div>
+          </div>
+          <div class="row">
+            <span class="ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.3-1.2a2 2 0 012.1-.5c.9.3 1.8.6 2.8.7a2 2 0 011.7 2z"/></svg>
+            </span>
+            <div>
+              <b>0571 - 8888 6666</b>
+              <div class="sub">电话预订可预留新品</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 二维码 ==================== -->
+  <div class="qr-wrap">
+    <div class="reveal">
+      <div class="qr-card"><img src="assets/qr.svg" alt="扫码关注拾光咖啡"></div>
+      <div class="qr-title">扫码关注 · 领取新品券</div>
+      <div class="qr-sub">关注公众号，回复「<b>秋日</b>」立减 <b>5 元</b></div>
+    </div>
+    <div class="footer">
+      <div class="rule"></div>
+      © 2026 拾光咖啡 SHIGUANG COFFEE<br>
+      本页由 AI 生成 · DSH
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // 滚动淡入
+  (function () {
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      Array.prototype.forEach.call(els, function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    Array.prototype.forEach.call(els, function (el, i) {
+      el.style.transitionDelay = (i % 3) * 90 + 'ms';
+      io.observe(el);
+    });
+  })();
+</script>
+</body>
+</html>
