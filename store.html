@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#1A0F0A">
+<title>门店详情 · 拾光咖啡</title>
+<style>
+  :root{
+    --bg-deep:#150C08;--bg:#1F120C;--card:#2C1B12;--card-2:#372218;
+    --line:rgba(201,162,39,.22);--gold:#C9A227;--gold-lt:#E3C572;
+    --caramel:#E07A3F;--cream:#F5E9DA;--text:#F2E4D4;--text-dim:#B99B7E;
+    --text-mute:#8A6E56;--radius:20px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg-deep);color:var(--text);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.6;overflow-x:hidden;
+  }
+  #page{max-width:750px;margin:0 auto;position:relative;background:var(--bg);box-shadow:0 0 80px rgba(0,0,0,.8);overflow:hidden}
+
+  .nav{
+    position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
+    padding:13px 24px calc(13px + env(safe-area-inset-top));
+    background:linear-gradient(180deg,rgba(21,12,8,.96),rgba(21,12,8,.86));
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  }
+  .nav .logo{font-size:17px;font-weight:700;color:var(--cream);letter-spacing:.08em}
+  .nav .logo span{color:var(--gold)}
+  .nav .menu{display:flex;gap:22px;font-size:14px}
+  .nav .menu a{text-decoration:none;color:var(--text-dim);transition:color .2s}
+  .nav .menu a.on{color:var(--gold);font-weight:600}
+
+  section{padding:0 24px}
+  .sec-head{text-align:center;padding:56px 0 26px}
+  .sec-head .en{font-size:11px;letter-spacing:.4em;text-indent:.4em;color:var(--text-mute);text-transform:uppercase}
+  .sec-head h2{font-size:25px;font-weight:700;color:var(--cream);letter-spacing:.14em;text-indent:.14em}
+  .sec-head .bar{width:38px;height:2px;margin:16px auto 0;border-radius:2px;background:linear-gradient(90deg,var(--caramel),var(--gold))}
+
+  /* 门店切换 */
+  .stores{display:flex;gap:12px;margin-bottom:22px}
+  .store-tab{
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;
+    padding:14px 10px;border-radius:16px;cursor:pointer;
+    background:var(--card);border:1px solid var(--line);transition:all .25s;
+  }
+  .store-tab.active{
+    background:linear-gradient(150deg,#3E2718,#2C1B12);border-color:var(--gold);
+    box-shadow:0 10px 26px -14px rgba(201,162,39,.6);
+  }
+  .store-tab .name{font-size:16px;font-weight:600;color:var(--cream)}
+  .store-tab .badge{font-size:10.5px;color:var(--gold-lt);border:1px solid rgba(201,162,39,.5);
+    padding:1px 9px;border-radius:999px;letter-spacing:.08em}
+  .store-tab.active .badge{background:rgba(201,162,39,.16)}
+
+  /* 门店信息卡 */
+  .info-card{
+    border-radius:var(--radius);overflow:hidden;
+    background:linear-gradient(165deg,var(--card-2),var(--card));border:1px solid var(--line);
+    box-shadow:0 18px 40px -18px rgba(0,0,0,.85);
+    animation:rise .6s cubic-bezier(.2,.7,.3,1);
+  }
+  @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  .info-card .img{position:relative;height:210px;overflow:hidden;background:var(--card-2)}
+  .info-card .img img{width:100%;height:100%;object-fit:cover;display:block}
+  .info-card .img::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(44,27,18,.1) 0%,rgba(31,18,12,.55) 62%,rgba(44,27,18,1) 100%)}
+  .info-card .img .tag{position:absolute;top:14px;left:14px;z-index:2;font-size:11px;padding:5px 13px;
+    border-radius:999px;background:linear-gradient(120deg,var(--gold),var(--caramel));color:#231207;font-weight:700}
+  .info-card .body{padding:0 24px 26px;margin-top:-30px;position:relative;z-index:2}
+  .info-card .sname{font-size:21px;font-weight:700;color:var(--cream);letter-spacing:.05em}
+  .info-card .ssub{margin-top:4px;font-size:11px;color:var(--text-mute);letter-spacing:.22em}
+
+  .rows{margin-top:22px;display:flex;flex-direction:column;gap:16px}
+  .row{display:flex;align-items:flex-start;gap:13px}
+  .row .ico{
+    flex:0 0 36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+    background:rgba(201,162,39,.1);border:1px solid var(--line);
+  }
+  .row .ico svg{width:17px;height:17px;stroke:var(--gold);fill:none;stroke-width:1.8;
+    stroke-linecap:round;stroke-linejoin:round}
+  .row .txt{flex:1;padding-top:1px}
+  .row .lbl{font-size:11px;color:var(--text-mute);letter-spacing:.16em;margin-bottom:3px}
+  .row .val{font-size:14.5px;color:var(--text);line-height:1.7}
+  .row .val.sm{font-size:12.5px;color:var(--text-dim);margin-top:2px}
+  .row .val b{color:var(--gold-lt);font-weight:600}
+
+  .call{
+    margin-top:24px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+    background:rgba(201,162,39,.08);border:1px solid var(--line);border-radius:14px;padding:15px 18px;
+  }
+  .call .ct{font-size:16px;font-weight:700;color:var(--gold-lt);font-family:Georgia,serif;letter-spacing:.02em;white-space:nowrap}
+  .call .cs{font-size:11.5px;color:var(--text-mute);margin-top:2px}
+  .call .btn{
+    flex:0 0 auto;padding:10px 18px;border-radius:11px;font-size:13.5px;font-weight:700;
+    background:linear-gradient(120deg,var(--gold),#E3C572);color:#231207;text-decoration:none;white-space:nowrap;
+  }
+
+  .back{text-align:center;margin:44px 0 38px;font-size:13.5px;color:var(--text-mute)}
+  .back a{text-decoration:none;color:var(--gold);font-weight:600}
+</style>
+</head>
+<body>
+<div id="page">
+
+  <nav class="nav">
+    <div class="logo">拾光<span>咖啡</span></div>
+    <div class="menu">
+      <a href="index.html">首页</a>
+      <a href="store.html" class="on">门店</a>
+      <a href="promo.html">领券</a>
+    </div>
+  </nav>
+
+  <section>
+    <div class="sec-head">
+      <div class="en">Find Us</div>
+      <h2>门店详情</h2>
+      <div class="bar"></div>
+    </div>
+
+    <div class="stores" id="stores"></div>
+
+    <div class="info-card" id="infoCard"></div>
+
+    <div class="back">返回 <a href="index.html">首页</a> · 去 <a href="promo.html">领券</a></div>
+  </section>
+
+</div>
+
+<script>
+  var ICON = {
+    pin: '<svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+    clock: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
+    phone: '<svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.3-1.2a2 2 0 012.1-.5c.9.3 1.8.6 2.8.7a2 2 0 011.7 2z"/></svg>',
+    metro: '<svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="14" rx="3"/><path d="M8 21l2-4M16 21l-2-4"/></svg>'
+  };
+
+  var STORES = [
+    {
+      key: '老街店',
+      name: '拾光咖啡 · 老街店',
+      sub: 'SHIGUANG COFFEE',
+      badge: '推荐门店',
+      tag: '推荐',
+      img: 'https://images.pexels.com/photos/36459825/pexels-photo-36459825.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      addr: '杭州市西湖区南山路 128 号 1F',
+      traffic: '地铁 1 号线龙翔桥站 B 口，步行约 400 米',
+      hours: '周一至周日 08:00 – 22:00',
+      promo: '秋分限定 · 第二杯半价（至 11 月 15 日）',
+      tel: '0571-88886666',
+      telShow: '0571 - 8888 6666',
+      telNote: '电话预订可预留新品'
+    },
+    {
+      key: '南山店',
+      name: '拾光咖啡 · 南山店',
+      sub: 'SHIGUANG COFFEE',
+      badge: '新店开业',
+      tag: '新店',
+      img: 'https://images.pexels.com/photos/32293011/pexels-photo-32293011.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      addr: '杭州市西湖区南山路 218 号 1F',
+      traffic: '地铁 1 号线龙翔桥站 C 口，步行约 350 米',
+      hours: '周一至周日 08:00 – 22:00',
+      promo: '秋分限定 · 第二杯半价（至 11 月 15 日）',
+      tel: '0571-88886668',
+      telShow: '0571 - 8888 6668',
+      telNote: '电话预订可预留新品'
+    }
+  ];
+
+  var cur = 0;
+
+  function renderTabs() {
+    var h = '';
+    STORES.forEach(function (s, i) {
+      h += '<div class="store-tab' + (i === cur ? ' active' : '') + '" data-i="' + i + '">' +
+           '<span class="name">' + s.key + '</span>' +
+           '<span class="badge">' + s.tag + '</span></div>';
+    });
+    var box = document.getElementById('stores');
+    box.innerHTML = h;
+    Array.prototype.forEach.call(box.querySelectorAll('.store-tab'), function (el) {
+      el.addEventListener('click', function () {
+        cur = parseInt(el.getAttribute('data-i'), 10);
+        renderTabs();
+        renderCard();
+      });
+    });
+  }
+
+  function renderCard() {
+    var s = STORES[cur];
+    var h = '';
+    h += '<div class="img"><img src="' + s.img + '" alt="' + s.name + '"><span class="tag">' + s.badge + '</span></div>';
+    h += '<div class="body">';
+    h += '<div class="sname">' + s.name + '</div><div class="ssub">' + s.sub + '</div>';
+    h += '<div class="rows">';
+
+    h += '<div class="row"><span class="ico">' + ICON.pin + '</span><div class="txt">' +
+         '<div class="lbl">地址</div><div class="val">' + s.addr + '</div>' +
+         '<div class="val sm">' + s.traffic + '</div></div></div>';
+
+    h += '<div class="row"><span class="ico">' + ICON.clock + '</span><div class="txt">' +
+         '<div class="lbl">营业时间</div><div class="val">' + s.hours + '</div>' +
+         '<div class="val sm">' + s.promo + '</div></div></div>';
+
+    h += '<div class="row"><span class="ico">' + ICON.phone + '</span><div class="txt">' +
+         '<div class="lbl">联系电话</div><div class="val">' + s.telShow + '</div>' +
+         '<div class="val sm">' + s.telNote + '</div></div></div>';
+
+    h += '</div>'; // rows
+    h += '<div class="call"><div><div class="ct">' + s.telShow + '</div>' +
+         '<div class="cs">' + s.telNote + '</div></div>' +
+         '<a class="btn" href="tel:' + s.tel + '">拨打电话</a></div>';
+    h += '</div>'; // body
+    document.getElementById('infoCard').innerHTML = h;
+  }
+
+  renderTabs();
+  renderCard();
+</script>
+</body>
+</html>
