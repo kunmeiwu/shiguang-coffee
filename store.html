@@ -19,115 +19,159 @@
     font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
     line-height:1.6;overflow-x:hidden;
   }
-  #page{max-width:750px;margin:0 auto;position:relative;background:var(--bg);box-shadow:0 0 80px rgba(0,0,0,.8);overflow:hidden}
+  #page{background:var(--bg)}
 
   .nav{
-    position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
-    padding:13px 24px calc(13px + env(safe-area-inset-top));
-    background:linear-gradient(180deg,rgba(21,12,8,.96),rgba(21,12,8,.86));
-    backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:13px 20px calc(13px + env(safe-area-inset-top));
+    background:linear-gradient(180deg,rgba(21,12,8,.94),rgba(21,12,8,.72) 70%,rgba(21,12,8,0));
+    border-bottom:1px solid rgba(201,162,39,.16);
   }
-  .nav .logo{font-size:17px;font-weight:700;color:var(--cream);letter-spacing:.08em}
+  .nav .logo{font-size:16px;font-weight:700;color:var(--cream);letter-spacing:.08em}
   .nav .logo span{color:var(--gold)}
-  .nav .menu{display:flex;gap:22px;font-size:14px}
+  .nav .nav-right{display:flex;align-items:center;gap:13px}
+  .nav .menu{display:flex;gap:18px;font-size:13.5px}
   .nav .menu a{text-decoration:none;color:var(--text-dim);transition:color .2s}
   .nav .menu a.on{color:var(--gold);font-weight:600}
 
-  section{padding:0 24px}
-  .sec-head{text-align:center;padding:56px 0 26px}
-  .sec-head .en{font-size:11px;letter-spacing:.4em;text-indent:.4em;color:var(--text-mute);text-transform:uppercase}
-  .sec-head h2{font-size:25px;font-weight:700;color:var(--cream);letter-spacing:.14em;text-indent:.14em}
-  .sec-head .bar{width:38px;height:2px;margin:16px auto 0;border-radius:2px;background:linear-gradient(90deg,var(--caramel),var(--gold))}
+  .sec-head{text-align:center;padding:0 0 14px}
+  .sec-head .en{font-size:10.5px;letter-spacing:.4em;text-indent:.4em;color:var(--text-mute);text-transform:uppercase}
+  .sec-head h2{margin-top:8px;font-size:22px;font-weight:700;color:var(--cream);letter-spacing:.14em;text-indent:.14em}
+  .sec-head .bar{width:36px;height:2px;margin:12px auto 0;border-radius:2px;
+    background:linear-gradient(90deg,var(--caramel),var(--gold))}
 
-  /* 门店切换 */
-  .stores{display:flex;gap:12px;margin-bottom:22px}
+  /* ---------- 第 1 屏: 选择门店 ---------- */
+  .s-pick{justify-content:center;padding:0 22px 20px}
+  .stores{display:flex;gap:11px;margin-bottom:16px}
   .store-tab{
-    flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;
-    padding:14px 10px;border-radius:16px;cursor:pointer;
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;
+    padding:12px 8px;border-radius:15px;cursor:pointer;
     background:var(--card);border:1px solid var(--line);transition:all .25s;
   }
   .store-tab.active{
     background:linear-gradient(150deg,#3E2718,#2C1B12);border-color:var(--gold);
     box-shadow:0 10px 26px -14px rgba(201,162,39,.6);
   }
-  .store-tab .name{font-size:16px;font-weight:600;color:var(--cream)}
-  .store-tab .badge{font-size:10.5px;color:var(--gold-lt);border:1px solid rgba(201,162,39,.5);
-    padding:1px 9px;border-radius:999px;letter-spacing:.08em}
+  .store-tab .name{font-size:15px;font-weight:600;color:var(--cream)}
+  .store-tab .badge{font-size:10px;color:var(--gold-lt);border:1px solid rgba(201,162,39,.5);
+    padding:1px 8px;border-radius:999px;letter-spacing:.08em}
   .store-tab.active .badge{background:rgba(201,162,39,.16)}
 
-  /* 门店信息卡 */
   .info-card{
     border-radius:var(--radius);overflow:hidden;
     background:linear-gradient(165deg,var(--card-2),var(--card));border:1px solid var(--line);
     box-shadow:0 18px 40px -18px rgba(0,0,0,.85);
-    animation:rise .6s cubic-bezier(.2,.7,.3,1);
+    animation:rise .55s cubic-bezier(.2,.7,.3,1);
   }
-  @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-  .info-card .img{position:relative;height:210px;overflow:hidden;background:var(--card-2)}
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  .info-card .img{position:relative;height:150px;overflow:hidden;background:var(--card-2)}
   .info-card .img img{width:100%;height:100%;object-fit:cover;display:block}
   .info-card .img::after{content:"";position:absolute;inset:0;
-    background:linear-gradient(180deg,rgba(44,27,18,.1) 0%,rgba(31,18,12,.55) 62%,rgba(44,27,18,1) 100%)}
-  .info-card .img .tag{position:absolute;top:14px;left:14px;z-index:2;font-size:11px;padding:5px 13px;
+    background:linear-gradient(180deg,rgba(44,27,18,.1) 0%,rgba(31,18,12,.5) 62%,rgba(44,27,18,1) 100%)}
+  .info-card .img .tag{position:absolute;top:12px;left:12px;z-index:2;font-size:10.5px;padding:4px 12px;
     border-radius:999px;background:linear-gradient(120deg,var(--gold),var(--caramel));color:#231207;font-weight:700}
-  .info-card .body{padding:0 24px 26px;margin-top:-30px;position:relative;z-index:2}
-  .info-card .sname{font-size:21px;font-weight:700;color:var(--cream);letter-spacing:.05em}
-  .info-card .ssub{margin-top:4px;font-size:11px;color:var(--text-mute);letter-spacing:.22em}
+  .info-card .body{padding:0 20px 18px;margin-top:-26px;position:relative;z-index:2}
+  .info-card .sname{font-size:19px;font-weight:700;color:var(--cream);letter-spacing:.05em}
+  .info-card .ssub{margin-top:3px;font-size:10.5px;color:var(--text-mute);letter-spacing:.22em}
 
-  .rows{margin-top:22px;display:flex;flex-direction:column;gap:16px}
-  .row{display:flex;align-items:flex-start;gap:13px}
+  .rows{display:flex;flex-direction:column;gap:12px}
+  .info-card .rows{margin-top:15px}
+  .row{display:flex;align-items:flex-start;gap:12px}
   .row .ico{
-    flex:0 0 36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+    flex:0 0 32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;
     background:rgba(201,162,39,.1);border:1px solid var(--line);
   }
-  .row .ico svg{width:17px;height:17px;stroke:var(--gold);fill:none;stroke-width:1.8;
+  .row .ico svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:1.8;
     stroke-linecap:round;stroke-linejoin:round}
   .row .txt{flex:1;padding-top:1px}
-  .row .lbl{font-size:11px;color:var(--text-mute);letter-spacing:.16em;margin-bottom:3px}
-  .row .val{font-size:14.5px;color:var(--text);line-height:1.7}
-  .row .val.sm{font-size:12.5px;color:var(--text-dim);margin-top:2px}
+  .row .lbl{font-size:10.5px;color:var(--text-mute);letter-spacing:.16em;margin-bottom:2px}
+  .row .val{font-size:14px;color:var(--text);line-height:1.65}
+  .row .val.sm{font-size:12px;color:var(--text-dim);margin-top:2px}
   .row .val b{color:var(--gold-lt);font-weight:600}
 
-  .call{
-    margin-top:24px;display:flex;align-items:center;justify-content:space-between;gap:12px;
-    background:rgba(201,162,39,.08);border:1px solid var(--line);border-radius:14px;padding:15px 18px;
+  /* ---------- 第 2 屏: 联系我们 ---------- */
+  .s-call{justify-content:center;padding:0 24px 26px}
+  .call-card{
+    border-radius:var(--radius);text-align:center;padding:26px 22px 24px;
+    background:linear-gradient(155deg,#372218,#2C1B12);border:1px solid var(--line);
+    box-shadow:0 20px 46px -18px rgba(0,0,0,.85);position:relative;overflow:hidden;
   }
-  .call .ct{font-size:16px;font-weight:700;color:var(--gold-lt);font-family:Georgia,serif;letter-spacing:.02em;white-space:nowrap}
-  .call .cs{font-size:11.5px;color:var(--text-mute);margin-top:2px}
-  .call .btn{
-    flex:0 0 auto;padding:10px 18px;border-radius:11px;font-size:13.5px;font-weight:700;
-    background:linear-gradient(120deg,var(--gold),#E3C572);color:#231207;text-decoration:none;white-space:nowrap;
+  .call-card::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(80% 60% at 50% 20%,rgba(201,162,39,.18),transparent 70%)}
+  .call-card .lbl{position:relative;font-size:10.5px;color:var(--text-mute);letter-spacing:.3em}
+  .call-card .ct{position:relative;margin-top:12px;font-size:27px;font-weight:700;
+    color:var(--gold-lt);font-family:Georgia,serif;letter-spacing:.02em;white-space:nowrap}
+  .call-card .cs{position:relative;margin-top:7px;font-size:12px;color:var(--text-mute)}
+  .call-card .btn{
+    position:relative;display:inline-block;margin-top:19px;padding:13px 40px;border-radius:13px;
+    font-size:15px;font-weight:700;letter-spacing:.12em;text-decoration:none;
+    background:linear-gradient(120deg,var(--gold),#E3C572);color:#231207;
   }
+  .call-card .btn:active{transform:scale(.98)}
 
-  .back{text-align:center;margin:44px 0 38px;font-size:13.5px;color:var(--text-mute)}
+  .traffic{
+    margin-top:18px;padding:15px 18px;border-radius:15px;
+    background:rgba(201,162,39,.07);border:1px solid var(--line);
+    display:flex;align-items:flex-start;gap:12px;
+  }
+  .traffic .ico{flex:0 0 32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+    background:rgba(201,162,39,.12);border:1px solid var(--line)}
+  .traffic .ico svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:1.8;
+    stroke-linecap:round;stroke-linejoin:round}
+  .traffic .t{font-size:12.5px;color:var(--text-dim);line-height:1.7}
+  .traffic .t b{color:var(--text);display:block;font-size:13.5px;margin-bottom:2px}
+
+  .back{text-align:center;margin-top:22px;font-size:13px;color:var(--text-mute)}
   .back a{text-decoration:none;color:var(--gold);font-weight:600}
 </style>
+<!-- H5 通用核心: 9:16 翻页舞台 + 背景音乐。须在本页样式之后引入 -->
+<link rel="stylesheet" href="assets/h5-core.css">
 </head>
 <body>
 <div id="page">
 
   <nav class="nav">
     <div class="logo">拾光<span>咖啡</span></div>
-    <div class="menu">
-      <a href="index.html">首页</a>
-      <a href="store.html" class="on">门店</a>
-      <a href="promo.html">领券</a>
+    <div class="nav-right">
+      <div class="menu">
+        <a href="index.html">首页</a>
+        <a href="store.html" class="on">门店</a>
+        <a href="promo.html">领券</a>
+      </div>
+      <!-- 音乐开关停靠点: 与首页一致, 统一放导航右上角 -->
+      <span data-bgm-slot></span>
     </div>
   </nav>
 
-  <section>
-    <div class="sec-head">
-      <div class="en">Find Us</div>
-      <h2>门店详情</h2>
-      <div class="bar"></div>
-    </div>
+  <div class="h5-scroll">
 
-    <div class="stores" id="stores"></div>
+    <!-- ---------- 第 1 屏 · 选择门店 ---------- -->
+    <section class="screen s-pick">
+      <div class="sec-head">
+        <div class="en">Find Us</div>
+        <h2>门店详情</h2>
+        <div class="bar"></div>
+      </div>
 
-    <div class="info-card" id="infoCard"></div>
+      <div class="stores" id="stores"></div>
 
-    <div class="back">返回 <a href="index.html">首页</a> · 去 <a href="promo.html">领券</a></div>
-  </section>
+      <div class="info-card" id="infoCard"></div>
+    </section>
 
+    <!-- ---------- 第 2 屏 · 联系我们 ---------- -->
+    <section class="screen s-call">
+      <div class="sec-head">
+        <div class="en">Contact</div>
+        <h2>联系我们</h2>
+        <div class="bar"></div>
+      </div>
+
+      <div class="call-card" id="callCard"></div>
+      <div class="traffic" id="traffic"></div>
+      <div class="back">返回 <a href="index.html">首页</a> · 去 <a href="promo.html">领券</a></div>
+    </section>
+
+  </div>
 </div>
 
 <script>
@@ -143,9 +187,8 @@
       key: '老街店',
       name: '拾光咖啡 · 老街店',
       sub: 'SHIGUANG COFFEE',
-      badge: '推荐门店',
       tag: '推荐',
-      img: 'https://images.pexels.com/photos/36459825/pexels-photo-36459825.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      img: 'assets/img/store-01.webp',
       addr: '杭州市西湖区南山路 128 号 1F',
       traffic: '地铁 1 号线龙翔桥站 B 口，步行约 400 米',
       hours: '周一至周日 08:00 – 22:00',
@@ -158,9 +201,8 @@
       key: '南山店',
       name: '拾光咖啡 · 南山店',
       sub: 'SHIGUANG COFFEE',
-      badge: '新店开业',
       tag: '新店',
-      img: 'https://images.pexels.com/photos/32293011/pexels-photo-32293011.jpeg?auto=compress&cs=tinysrgb&w=1200',
+      img: 'assets/img/store-02.webp',
       addr: '杭州市西湖区南山路 218 号 1F',
       traffic: '地铁 1 号线龙翔桥站 C 口，步行约 350 米',
       hours: '周一至周日 08:00 – 22:00',
@@ -186,41 +228,46 @@
       el.addEventListener('click', function () {
         cur = parseInt(el.getAttribute('data-i'), 10);
         renderTabs();
-        renderCard();
+        renderAll();
       });
     });
   }
 
-  function renderCard() {
+  function renderAll() {
     var s = STORES[cur];
+
+    /* --- 第 1 屏: 门店卡片(图片 / 店名 / 地址 / 营业时间) --- */
     var h = '';
-    h += '<div class="img"><img src="' + s.img + '" alt="' + s.name + '"><span class="tag">' + s.badge + '</span></div>';
+    h += '<div class="img"><img src="' + s.img + '" alt="' + s.name + '" loading="lazy" decoding="async">' +
+         '<span class="tag">' + s.tag + '</span></div>';
     h += '<div class="body">';
     h += '<div class="sname">' + s.name + '</div><div class="ssub">' + s.sub + '</div>';
     h += '<div class="rows">';
-
     h += '<div class="row"><span class="ico">' + ICON.pin + '</span><div class="txt">' +
-         '<div class="lbl">地址</div><div class="val">' + s.addr + '</div>' +
-         '<div class="val sm">' + s.traffic + '</div></div></div>';
-
+         '<div class="lbl">地址</div><div class="val">' + s.addr + '</div></div></div>';
     h += '<div class="row"><span class="ico">' + ICON.clock + '</span><div class="txt">' +
          '<div class="lbl">营业时间</div><div class="val">' + s.hours + '</div>' +
          '<div class="val sm">' + s.promo + '</div></div></div>';
-
-    h += '<div class="row"><span class="ico">' + ICON.phone + '</span><div class="txt">' +
-         '<div class="lbl">联系电话</div><div class="val">' + s.telShow + '</div>' +
-         '<div class="val sm">' + s.telNote + '</div></div></div>';
-
-    h += '</div>'; // rows
-    h += '<div class="call"><div><div class="ct">' + s.telShow + '</div>' +
-         '<div class="cs">' + s.telNote + '</div></div>' +
-         '<a class="btn" href="tel:' + s.tel + '">拨打电话</a></div>';
-    h += '</div>'; // body
+    h += '</div></div>';
     document.getElementById('infoCard').innerHTML = h;
+
+    /* --- 第 2 屏: 电话大卡 --- */
+    var c = '';
+    c += '<div class="lbl">预订电话</div>';
+    c += '<div class="ct">' + s.telShow + '</div>';
+    c += '<div class="cs">' + s.telNote + '</div>';
+    c += '<a class="btn" href="tel:' + s.tel + '">拨打电话</a>';
+    document.getElementById('callCard').innerHTML = c;
+
+    /* --- 第 2 屏: 到店路线 --- */
+    document.getElementById('traffic').innerHTML =
+      '<span class="ico">' + ICON.metro + '</span>' +
+      '<div class="t"><b>' + s.addr + '</b>' + s.traffic + '</div>';
   }
 
   renderTabs();
-  renderCard();
+  renderAll();
 </script>
+<script src="assets/h5-core.js" defer></script>
 </body>
 </html>

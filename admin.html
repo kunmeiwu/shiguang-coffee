@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1A0F0A">
+<title>数据记录 · 拾光咖啡</title>
+<style>
+  :root{
+    --bg-deep:#150C08;--bg:#1F120C;--card:#2C1B12;--card-2:#372218;
+    --line:rgba(201,162,39,.22);--gold:#C9A227;--gold-lt:#E3C572;
+    --caramel:#E07A3F;--cream:#F5E9DA;--text:#F2E4D4;--text-dim:#B99B7E;--text-mute:#8A6E56;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg-deep);color:var(--text);
+    font-family:"PingFang SC","Microsoft YaHei",-apple-system,sans-serif;
+    line-height:1.6;padding:24px 16px 60px;
+  }
+  .wrap{max-width:1100px;margin:0 auto}
+  h1{font-size:22px;color:var(--cream);letter-spacing:.06em;margin-bottom:6px}
+  .sub{font-size:13px;color:var(--text-mute);margin-bottom:22px}
+  .bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+  button{
+    padding:10px 18px;border-radius:10px;border:1px solid var(--line);cursor:pointer;
+    background:var(--card);color:var(--text);font-size:13.5px;font-family:inherit;transition:all .2s;
+  }
+  button:hover{border-color:var(--gold)}
+  button.primary{background:linear-gradient(120deg,var(--gold),var(--gold-lt));color:#231207;font-weight:700;border:none}
+  button.danger{border-color:rgba(224,122,63,.5);color:var(--caramel)}
+  .stat{
+    display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px;
+  }
+  .stat .box{
+    flex:1;min-width:130px;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:16px 18px;
+  }
+  .stat .box .n{font-size:26px;font-weight:700;color:var(--gold-lt);font-family:Georgia,serif}
+  .stat .box .l{font-size:12px;color:var(--text-mute);margin-top:3px}
+  .empty{
+    background:var(--card);border:1px dashed var(--line);border-radius:16px;padding:44px 24px;
+    text-align:center;color:var(--text-mute);font-size:14px;
+  }
+  .empty b{color:var(--gold-lt);display:block;font-size:16px;margin-bottom:8px}
+  table{
+    width:100%;border-collapse:collapse;background:var(--card);
+    border-radius:14px;overflow:hidden;border:1px solid var(--line);font-size:13.5px;
+  }
+  th{
+    background:var(--card-2);color:var(--gold-lt);font-weight:600;text-align:left;
+    padding:12px 14px;font-size:12.5px;letter-spacing:.06em;white-space:nowrap;
+  }
+  td{padding:11px 14px;border-top:1px solid rgba(201,162,39,.12);color:var(--text-dim)}
+  td.hi{color:var(--cream);font-weight:600}
+  tr:hover td{background:rgba(201,162,39,.05)}
+  .tag{display:inline-block;font-size:11px;padding:2px 9px;border-radius:999px;
+    background:rgba(201,162,39,.14);color:var(--gold-lt)}
+  .note{
+    margin-top:22px;padding:16px 18px;border-radius:12px;font-size:12.5px;line-height:1.9;
+    background:rgba(224,122,63,.08);border:1px solid rgba(224,122,63,.3);color:var(--text-dim);
+  }
+  .note b{color:var(--caramel)}
+  textarea{
+    width:100%;height:110px;margin-top:12px;padding:12px;border-radius:10px;
+    background:var(--card-2);border:1px solid var(--line);color:var(--text);
+    font-family:Consolas,Monaco,monospace;font-size:12.5px;resize:vertical;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>数据记录查看器</h1>
+  <div class="sub">读取本机浏览器 localStorage 中保存的表单提交记录 · 拾光咖啡</div>
+
+  <div class="bar">
+    <button class="primary" onclick="load()">刷新记录</button>
+    <button onclick="exportJSON()">导出 JSON</button>
+    <button onclick="exportCSV()">导出 CSV</button>
+    <button class="danger" onclick="clearAll()">清空本机记录</button>
+  </div>
+
+  <div class="stat" id="stat"></div>
+  <div id="content"></div>
+
+  <div class="note">
+    <b>重要：这里只看得到「本机浏览器」提交的数据。</b><br>
+    因为 GitHub Pages 是纯静态托管、没有服务器，表单数据默认只保存在提交者自己的浏览器里。<br>
+    要汇总所有用户的提交，必须接一个接收端 —— 见下方导入区与说明。
+  </div>
+
+  <h1 style="margin-top:34px;font-size:17px">导入外部记录</h1>
+  <div class="sub">把 <code>data/feedback.json</code> 的内容粘贴进来，即可在此统一查看</div>
+  <textarea id="importBox" placeholder='[{"name":"张三","phone":"13800000000","store":"老街店","drink":"桂花冷萃","ts":"2026-10-03 15:20:00"}]'></textarea>
+  <div class="bar" style="margin-top:12px">
+    <button class="primary" onclick="doImport()">导入并查看</button>
+  </div>
+  <div id="importContent"></div>
+</div>
+
+<script>
+var LS_KEY = 'shiguang_coupon_records';
+var imported = null;
+
+function readLocal() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch (e) { return []; }
+}
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+  });
+}
+
+function renderTable(rows, mountId, emptyMsg) {
+  var mount = document.getElementById(mountId);
+  if (!rows.length) {
+    mount.innerHTML = '<div class="empty"><b>' + emptyMsg + '</b>本机还没有提交记录。<br>打开 promo.html 提交一条测试数据，再回来刷新。</div>';
+    return;
+  }
+  var h = '<table><thead><tr>' +
+    '<th>#</th><th>称呼</th><th>手机号</th><th>到店门店</th><th>感兴趣新品</th><th>来源页</th><th>提交时间</th>' +
+    '</tr></thead><tbody>';
+  rows.forEach(function (r, i) {
+    h += '<tr>' +
+      '<td>' + (i + 1) + '</td>' +
+      '<td class="hi">' + esc(r.name) + '</td>' +
+      '<td class="hi">' + esc(r.phone) + '</td>' +
+      '<td>' + esc(r.store) + '</td>' +
+      '<td><span class="tag">' + esc(r.drink) + '</span></td>' +
+      '<td>' + esc(r.page) + '</td>' +
+      '<td>' + esc(r.ts) + '</td>' +
+      '</tr>';
+  });
+  h += '</tbody></table>';
+  mount.innerHTML = h;
+}
+
+function renderStat(rows) {
+  var byStore = {}, byDrink = {};
+  rows.forEach(function (r) {
+    byStore[r.store] = (byStore[r.store] || 0) + 1;
+    byDrink[r.drink] = (byDrink[r.drink] || 0) + 1;
+  });
+  var top = Object.keys(byDrink).sort(function (a, b) { return byDrink[b] - byDrink[a]; })[0] || '—';
+  document.getElementById('stat').innerHTML =
+    '<div class="box"><div class="n">' + rows.length + '</div><div class="l">本机记录总数</div></div>' +
+    '<div class="box"><div class="n">' + Object.keys(byStore).length + '</div><div class="l">涉及门店数</div></div>' +
+    '<div class="box"><div class="n" style="font-size:17px;padding-top:6px">' + esc(top) + '</div><div class="l">最热新品</div></div>';
+}
+
+function load() {
+  var rows = readLocal();
+  renderStat(rows);
+  renderTable(rows, 'content', '暂无本机记录');
+}
+
+function exportJSON() {
+  var rows = readLocal();
+  download('feedback-local.json', JSON.stringify(rows, null, 2));
+}
+
+function exportCSV() {
+  var rows = readLocal();
+  var head = ['序号', '称呼', '手机号', '到店门店', '感兴趣新品', '来源页', '提交时间'];
+  var lines = [head.join(',')];
+  rows.forEach(function (r, i) {
+    lines.push([i + 1, r.name, r.phone, r.store, r.drink, r.page, r.ts]
+      .map(function (v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; }).join(','));
+  });
+  // 加 BOM 让 Excel 正确识别中文
+  download('feedback-local.csv', '\ufeff' + lines.join('\r\n'), 'text/csv');
+}
+
+function download(name, text, type) {
+  var blob = new Blob([text], { type: (type || 'application/json') + ';charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function clearAll() {
+  if (!confirm('确定清空本机所有记录？此操作不可撤销。')) return;
+  localStorage.removeItem(LS_KEY);
+  load();
+}
+
+function doImport() {
+  var raw = document.getElementById('importBox').value.trim();
+  if (!raw) { alert('请先粘贴 JSON 内容'); return; }
+  try {
+    var data = JSON.parse(raw);
+    if (!Array.isArray(data)) data = [data];
+    imported = data;
+    renderTable(imported, 'importContent', '导入内容为空');
+  } catch (e) {
+    alert('JSON 解析失败：' + e.message);
+  }
+}
+
+load();
+</script>
+</body>
+</html>

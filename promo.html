@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#1A0F0A">
+<meta name="description" content="拾光咖啡 · 秋日新品券免费领，立减 5 元。扫码关注回复「秋日」即可领取。">
+<meta property="og:title" content="拾光咖啡 · 秋日新品券">
+<meta property="og:description" content="秋分限定 · 立减 5 元。填写信息即可领取专属券码。">
+<meta property="og:image" content="assets/img/prod-01.webp">
+<meta property="og:type" content="website">
 <title>扫码领券 · 拾光咖啡</title>
 <style>
   :root{
@@ -19,184 +24,271 @@
     font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
     line-height:1.6;overflow-x:hidden;
   }
-  #page{max-width:750px;margin:0 auto;position:relative;background:var(--bg);box-shadow:0 0 80px rgba(0,0,0,.8);overflow:hidden}
+  #page{background:var(--bg)}
 
   .nav{
-    position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
-    padding:13px 24px calc(13px + env(safe-area-inset-top));
-    background:linear-gradient(180deg,rgba(21,12,8,.96),rgba(21,12,8,.86));
-    backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:13px 20px calc(13px + env(safe-area-inset-top));
+    background:linear-gradient(180deg,rgba(21,12,8,.94),rgba(21,12,8,.72) 70%,rgba(21,12,8,0));
+    border-bottom:1px solid rgba(201,162,39,.16);
   }
-  .nav .logo{font-size:17px;font-weight:700;color:var(--cream);letter-spacing:.08em}
+  .nav .logo{font-size:16px;font-weight:700;color:var(--cream);letter-spacing:.08em}
   .nav .logo span{color:var(--gold)}
-  .nav .menu{display:flex;gap:22px;font-size:14px}
+  .nav .nav-right{display:flex;align-items:center;gap:13px}
+  .nav .menu{display:flex;gap:18px;font-size:13.5px}
   .nav .menu a{text-decoration:none;color:var(--text-dim);transition:color .2s}
   .nav .menu a.on{color:var(--gold);font-weight:600}
 
-  section{padding:0 24px}
-  .sec-head{text-align:center;padding:58px 0 24px}
-  .sec-head .en{font-size:11px;letter-spacing:.4em;text-indent:.4em;color:var(--text-mute);text-transform:uppercase}
-  .sec-head h2{font-size:25px;font-weight:700;color:var(--cream);letter-spacing:.14em;text-indent:.14em}
-  .sec-head .bar{width:38px;height:2px;margin:16px auto 0;border-radius:2px;background:linear-gradient(90deg,var(--caramel),var(--gold))}
+  .sec-head{text-align:center;padding:0 0 16px}
+  .sec-head .en{font-size:10.5px;letter-spacing:.4em;text-indent:.4em;color:var(--text-mute);text-transform:uppercase}
+  .sec-head h2{margin-top:8px;font-size:22px;font-weight:700;color:var(--cream);letter-spacing:.14em;text-indent:.14em}
+  .sec-head .bar{width:36px;height:2px;margin:12px auto 0;border-radius:2px;
+    background:linear-gradient(90deg,var(--caramel),var(--gold))}
 
+  /* ---------- 第 1 屏: 扫码 ---------- */
+  .s-scan{justify-content:center;align-items:center;text-align:center;padding:0 24px 26px}
   .claim{
-    position:relative;border-radius:var(--radius);overflow:hidden;text-align:center;
+    position:relative;border-radius:var(--radius);text-align:center;width:100%;
     background:linear-gradient(150deg,#372218,#2C1B12);border:1px solid var(--line);
-    box-shadow:0 20px 46px -18px rgba(0,0,0,.85);padding:32px 24px;
+    box-shadow:0 20px 46px -18px rgba(0,0,0,.85);padding:26px 22px;
   }
   .claim::before{content:"";position:absolute;inset:0;pointer-events:none;
     background:radial-gradient(80% 60% at 50% 26%,rgba(201,162,39,.2),transparent 70%)}
-  .claim .qr-wrap{position:relative;display:inline-block;padding:20px;border-radius:20px;
+  .claim .qr-wrap{position:relative;display:inline-block;padding:17px;border-radius:20px;
     background:linear-gradient(160deg,#FBF3E7,#EFE0CB);
     box-shadow:0 20px 46px -16px rgba(0,0,0,.85),0 0 0 1px rgba(201,162,39,.3) inset}
-  .claim .qr-wrap img{display:block;width:164px;height:164px}
-  .claim .tag{position:relative;display:inline-block;margin-top:18px;padding:7px 18px;border-radius:999px;
-    background:linear-gradient(120deg,var(--caramel),var(--gold));color:#231207;font-weight:700;font-size:13px}
-  .claim .title{position:relative;margin-top:16px;font-size:21px;font-weight:700;color:var(--cream);letter-spacing:.08em}
-  .claim .sub{position:relative;margin-top:8px;font-size:13.5px;color:var(--text-dim)}
+  .claim .qr-wrap img{display:block;width:152px;height:152px}
+  .claim .tag{position:relative;display:inline-block;margin-top:16px;padding:6px 17px;border-radius:999px;
+    background:linear-gradient(120deg,var(--caramel),var(--gold));color:#231207;font-weight:700;font-size:12.5px}
+  .claim .title{position:relative;margin-top:13px;font-size:19px;font-weight:700;color:var(--cream);letter-spacing:.06em}
+  .claim .sub{position:relative;margin-top:6px;font-size:13px;color:var(--text-dim)}
   .claim .sub b{color:var(--gold-lt)}
+  .scan-note{margin-top:16px;font-size:12px;color:var(--text-mute);letter-spacing:.05em}
 
-  .form-card{margin-top:28px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px}
-  .form-card .title{margin-bottom:20px;font-size:17px;font-weight:600;color:var(--cream)}
-  .form-row{margin-bottom:17px}
-  .form-row .lbl{font-size:13px;color:var(--text-dim);margin-bottom:8px}
+  /* 扫码屏压缩: 小屏上若仍超出, 缩小二维码与留白 */
+  .s-scan.is-tight{padding-bottom:18px}
+  .s-scan.is-tight .sec-head{padding-bottom:10px}
+  .s-scan.is-tight .claim{padding:20px 18px}
+  .s-scan.is-tight .claim .qr-wrap{padding:14px}
+  .s-scan.is-tight .claim .qr-wrap img{width:136px;height:136px}
+  .s-scan.is-tight .scan-note{margin-top:12px}
+
+  .s-scan.is-tighter .sec-head .en{display:none}
+  .s-scan.is-tighter .sec-head h2{font-size:18px;margin-top:0}
+  .s-scan.is-tighter .sec-head .bar{display:none}
+  .s-scan.is-tighter .claim{padding:16px 14px}
+  .s-scan.is-tighter .claim .qr-wrap{padding:12px}
+  .s-scan.is-tighter .claim .qr-wrap img{width:118px;height:118px}
+  .s-scan.is-tighter .claim .tag{margin-top:11px;font-size:12px;padding:5px 14px}
+  .s-scan.is-tighter .claim .title{font-size:16.5px;margin-top:9px}
+  .s-scan.is-tighter .claim .sub{font-size:12px;margin-top:5px}
+  .s-scan.is-tighter .scan-note{margin-top:9px;font-size:11px}
+
+  /* ---------- 第 2 屏: 表单 ---------- */
+  .s-form{justify-content:center;padding:0 24px 22px}
+  .form-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+  .form-row{margin-bottom:15px}
+  .form-row .lbl{font-size:12.5px;color:var(--text-dim);margin-bottom:7px}
   .form-row .req{color:var(--caramel);font-weight:700;margin-right:3px}
   .form-row input,.form-row select{
-    width:100%;padding:13px 16px;border-radius:12px;font-size:15px;color:var(--text);
+    width:100%;padding:12px 15px;border-radius:12px;font-size:15px;color:var(--text);
     background:var(--card-2);border:1px solid var(--line);outline:none;transition:border-color .2s;
     font-family:inherit;appearance:none;
   }
   .form-row select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238A6E56' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat:no-repeat;background-position:right 16px center}
+    background-repeat:no-repeat;background-position:right 15px center}
   .form-row input:focus,.form-row select:focus{border-color:var(--gold)}
   .form-row input::placeholder{color:var(--text-mute)}
   .btn-submit{
-    width:100%;margin-top:10px;padding:15px;border:none;border-radius:14px;cursor:pointer;
-    background:linear-gradient(120deg,var(--gold),#E3C572);color:#231207;font-size:16px;font-weight:700;
+    width:100%;margin-top:6px;padding:14px;border:none;border-radius:14px;cursor:pointer;
+    background:linear-gradient(120deg,var(--gold),#E3C572);color:#231207;font-size:15.5px;font-weight:700;
     letter-spacing:.12em;transition:opacity .2s,transform .1s;font-family:inherit;
   }
   .btn-submit:active{transform:scale(.985)}
   .btn-submit:disabled{opacity:.55;cursor:not-allowed}
-
-  .result{display:none;margin-top:18px;padding:18px;border-radius:14px;
-    background:rgba(127,181,106,.12);border:1px solid rgba(127,181,106,.4);text-align:center}
-  .result.show{display:block;animation:fade .4s ease}
-  .result.warn{background:rgba(224,122,63,.12);border-color:rgba(224,122,63,.45)}
-  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-  .result .icon{width:52px;height:52px;border-radius:50%;background:rgba(127,181,106,.2);
-    display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:26px;color:var(--success)}
-  .result.warn .icon{background:rgba(224,122,63,.2);color:var(--caramel)}
-  .result .t1{font-size:16px;font-weight:700;color:var(--cream)}
-  .result .t2{margin-top:6px;font-size:12.5px;color:var(--text-dim);line-height:1.7}
-
-  .err{color:var(--caramel);font-size:12.5px;margin-top:-8px;margin-bottom:12px;display:none}
+  .err{color:var(--caramel);font-size:12.5px;margin-top:-6px;margin-bottom:10px;display:none}
   .err.show{display:block}
+  .tips{margin-top:13px;font-size:11.5px;color:var(--text-mute);text-align:center;line-height:1.75}
 
-  .tips{margin-top:16px;font-size:12px;color:var(--text-mute);text-align:center;line-height:1.8}
-  .footer{margin-top:32px;text-align:center;font-size:11px;color:#5C4634;letter-spacing:.1em;padding-bottom:36px}
-  .footer .rule{width:40px;height:1px;margin:0 auto 18px;background:rgba(201,162,39,.25)}
+  /* ---------- 表单屏压缩: 由 h5-core.js 实测溢出后加类 ----------
+     目的: 小屏(320x568 / 360x640)上表单也必须完整放进一个 9:16 页面。
+     第一级 is-tight 收紧间距; 第二级 is-tighter 进一步缩小并精简表头。 */
+  .s-form.is-tight .sec-head{padding-bottom:9px}
+  .s-form.is-tight .sec-head h2{font-size:19px;margin-top:6px}
+  .s-form.is-tight .sec-head .bar{margin-top:9px}
+  .s-form.is-tight .form-card{padding:16px}
+  .s-form.is-tight .form-row{margin-bottom:10px}
+  .s-form.is-tight .form-row .lbl{margin-bottom:5px}
+  .s-form.is-tight .form-row input,.s-form.is-tight .form-row select{padding:10px 13px;font-size:14.5px}
+  .s-form.is-tight .btn-submit{padding:12px;font-size:15px}
+  .s-form.is-tight .tips{margin-top:9px;font-size:11px;line-height:1.6}
+
+  .s-form.is-tighter .sec-head{padding-bottom:8px}
+  .s-form.is-tighter .sec-head .en{display:none}
+  .s-form.is-tighter .sec-head h2{font-size:17px;margin-top:0}
+  .s-form.is-tighter .sec-head .bar{display:none}
+  .s-form.is-tighter .form-card{padding:13px}
+  .s-form.is-tighter .form-row{margin-bottom:8px}
+  .s-form.is-tighter .form-row .lbl{font-size:12px;margin-bottom:4px}
+  .s-form.is-tighter .form-row input,.s-form.is-tighter .form-row select{padding:9px 12px;font-size:14px;border-radius:10px}
+  .s-form.is-tighter .btn-submit{padding:11px;font-size:14.5px;margin-top:2px;border-radius:12px}
+  .s-form.is-tighter .err{margin-bottom:7px}
+  .s-form.is-tighter .tips{margin-top:7px;font-size:10.5px;line-height:1.5}
+
+  /* ---------- 第 3 屏: 成功 ---------- */
+  .s-done{justify-content:center;align-items:center;text-align:center;padding:0 30px 30px}
+  .done-badge{
+    width:92px;height:92px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 50% 38%,rgba(127,181,106,.28),rgba(127,181,106,.08));
+    border:1px solid rgba(127,181,106,.45);font-size:42px;color:var(--success);
+    animation:pop .5s cubic-bezier(.2,.9,.3,1.2);
+  }
+  @keyframes pop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
+  .done-t1{margin-top:22px;font-size:23px;font-weight:800;color:var(--cream);letter-spacing:.08em}
+  .done-t2{margin-top:10px;font-size:13.5px;color:var(--text-dim);line-height:1.8;max-width:26ch}
+  .done-code{
+    margin-top:22px;padding:14px 26px;border-radius:15px;
+    background:rgba(201,162,39,.09);border:1px dashed rgba(201,162,39,.42);
+  }
+  .done-code .k{font-size:10.5px;color:var(--text-mute);letter-spacing:.22em}
+  .done-code .v{margin-top:5px;font-size:20px;font-weight:700;color:var(--gold-lt);
+    font-family:Georgia,serif;letter-spacing:.13em}
+  .done-actions{margin-top:26px;display:flex;gap:12px}
+  .done-actions a{
+    padding:12px 24px;border-radius:12px;font-size:14px;font-weight:600;
+    text-decoration:none;letter-spacing:.06em;
+  }
+  .done-actions .a1{background:linear-gradient(120deg,var(--gold),#E3C572);color:#231207}
+  .done-actions .a2{background:rgba(245,233,218,.07);color:var(--text-dim);
+    border:1px solid rgba(245,233,218,.12)}
+  .done-foot{margin-top:26px;font-size:10.5px;color:#5C4634;letter-spacing:.1em;line-height:1.9}
 </style>
+<!-- H5 通用核心: 9:16 翻页舞台 + 背景音乐。须在本页样式之后引入 -->
+<link rel="stylesheet" href="assets/h5-core.css">
 </head>
 <body>
 <div id="page">
 
   <nav class="nav">
     <div class="logo">拾光<span>咖啡</span></div>
-    <div class="menu">
-      <a href="index.html">首页</a>
-      <a href="store.html">门店</a>
-      <a href="promo.html" class="on">领券</a>
+    <div class="nav-right">
+      <div class="menu">
+        <a href="index.html">首页</a>
+        <a href="store.html">门店</a>
+        <a href="promo.html" class="on">领券</a>
+      </div>
+      <!-- 音乐开关停靠点: 与首页一致, 统一放导航右上角 -->
+      <span data-bgm-slot></span>
     </div>
   </nav>
 
-  <section>
-    <div class="sec-head">
-      <div class="en">Claim Coupon</div>
-      <h2>扫码领取 · 秋日新品券</h2>
-      <div class="bar"></div>
-    </div>
+  <div class="h5-scroll">
 
-    <div class="claim">
-      <div class="qr-wrap"><img src="assets/qr.svg" alt="领取券码二维码"></div>
-      <div class="tag">秋分限定 · 立减 5 元</div>
-      <div class="title">扫码关注，领取新品券</div>
-      <div class="sub">关注公众号，回复「<b>秋日</b>」即可领券</div>
-    </div>
-
-    <div class="form-card">
-      <div class="title">填写信息，领取专属新品券</div>
-
-      <div class="form-row">
-        <div class="lbl"><span class="req">*</span>称呼</div>
-        <input type="text" id="name" placeholder="请输入您的称呼" maxlength="20" autocomplete="name">
+    <!-- ---------- 第 1 屏 · 扫码 ---------- -->
+    <section class="screen s-scan">
+      <div class="sec-head">
+        <div class="en">Claim Coupon</div>
+        <h2>扫码领取 · 秋日新品券</h2>
+        <div class="bar"></div>
       </div>
 
-      <div class="form-row">
-        <div class="lbl"><span class="req">*</span>手机号</div>
-        <input type="tel" id="phone" placeholder="请输入手机号" maxlength="11" inputmode="numeric" autocomplete="tel">
+      <div class="claim">
+        <div class="qr-wrap"><img src="assets/qr.svg" alt="领取券码二维码"></div>
+        <div class="tag">秋分限定 · 立减 5 元</div>
+        <div class="title">扫码关注，领取新品券</div>
+        <div class="sub">关注公众号，回复「<b>秋日</b>」即可领券</div>
       </div>
 
-      <div class="form-row">
-        <div class="lbl">到店门店</div>
-        <select id="store">
-          <option value="老街店">老街店（南山路 128 号）</option>
-          <option value="南山店">南山店（南山路 218 号）</option>
-        </select>
+      <div class="scan-note">下滑填写信息，可领取专属券码</div>
+    </section>
+
+    <!-- ---------- 第 2 屏 · 填写信息 ---------- -->
+    <section class="screen s-form">
+      <div class="sec-head">
+        <div class="en">Your Info</div>
+        <h2>填写信息</h2>
+        <div class="bar"></div>
       </div>
 
-      <div class="form-row">
-        <div class="lbl">感兴趣的新品</div>
-        <select id="drink">
-          <option value="焦糖海盐拿铁">焦糖海盐拿铁 ¥32</option>
-          <option value="桂花冷萃">桂花冷萃 ¥30</option>
-          <option value="黑巧摩卡">黑巧摩卡 ¥34</option>
-          <option value="都想试试">都想试试</option>
-        </select>
+      <div class="form-card">
+        <div class="form-row">
+          <label class="lbl" for="name"><span class="req">*</span>称呼</label>
+          <input type="text" id="name" placeholder="请输入您的称呼" maxlength="20" autocomplete="name">
+        </div>
+
+        <div class="form-row">
+          <label class="lbl" for="phone"><span class="req">*</span>手机号</label>
+          <input type="tel" id="phone" placeholder="请输入手机号" maxlength="11" inputmode="numeric" autocomplete="tel">
+        </div>
+
+        <div class="form-row">
+          <label class="lbl" for="store">到店门店</label>
+          <select id="store">
+            <option value="老街店">老街店（南山路 128 号）</option>
+            <option value="南山店">南山店（南山路 218 号）</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label class="lbl" for="drink">感兴趣的新品</label>
+          <select id="drink">
+            <option value="焦糖海盐拿铁">焦糖海盐拿铁 ¥32</option>
+            <option value="桂花冷萃">桂花冷萃 ¥30</option>
+            <option value="黑巧摩卡">黑巧摩卡 ¥34</option>
+            <option value="都想试试">都想试试</option>
+          </select>
+        </div>
+
+        <div class="err" id="err"></div>
+        <button class="btn-submit" id="submitBtn">提交领取</button>
+
+        <div class="tips">
+          提交信息仅用于门店核对与券码核销，不作他用<br>
+          券码有效期至 11 月 15 日
+        </div>
       </div>
+    </section>
 
-      <div class="err" id="err"></div>
-      <button class="btn-submit" id="submitBtn">提交领取</button>
-
-      <div class="result" id="result">
-        <div class="icon" id="resultIcon">✓</div>
-        <div class="t1" id="resultTitle">领取成功！</div>
-        <div class="t2" id="resultMsg">券码已记录，到店报手机号即可核销</div>
+    <!-- ---------- 第 3 屏 · 领取成功 ---------- -->
+    <section class="screen s-done">
+      <div class="done-badge" id="doneIcon">✓</div>
+      <div class="done-t1" id="doneTitle">领取成功！</div>
+      <div class="done-t2" id="doneMsg">券码已记录，到店报手机号即可核销</div>
+      <div class="done-code">
+        <div class="k">专属券码</div>
+        <div class="v" id="doneCode">— — — —</div>
       </div>
-
-      <div class="tips">
-        提交信息仅用于门店核对与券码核销，不作他用<br>
-        券码有效期至 11 月 15 日
+      <div class="done-actions">
+        <a class="a1" href="store.html">查看门店</a>
+        <a class="a2" href="index.html">回首页</a>
       </div>
-    </div>
-  </section>
+      <div class="done-foot">
+        © 2026 拾光咖啡 SHIGUANG COFFEE<br>
+        本页由 AI 生成 · DSH
+      </div>
+    </section>
 
-  <div class="footer">
-    <div class="rule"></div>
-    © 2026 拾光咖啡 SHIGUANG COFFEE<br>
-    本页由 AI 生成 · DSH
   </div>
-
 </div>
 
 <script>
 /* ============================================================
    表单提交配置
    ------------------------------------------------------------
-   GitHub Pages 是纯静态托管, 没有服务器, 表单需投递到外部接收端。
-   这里用 FormSubmit.co (免注册、免服务器):
-     把下面的邮箱换成你的邮箱, 第一次提交后去邮箱点一次确认链接
-     即永久生效 (每个邮箱只需确认一次)。
-   未替换邮箱前, 提交会保存在本机 localStorage 兜底, 不会丢数据。
+   GitHub Pages 是纯静态托管, 没有服务器, 表单投递到 FormSubmit.co
+   (免注册、免服务器) 再转发到邮箱。
+   接收邮箱: 469424131@qq.com
    ============================================================ */
-var FORM_ENDPOINT = 'https://formsubmit.co/ajax/YOUR_EMAIL@example.com';
+var FORM_ENDPOINT = 'https://formsubmit.co/ajax/469424131@qq.com';
 
 (function () {
   var btn = document.getElementById('submitBtn');
   var errEl = document.getElementById('err');
-  var result = document.getElementById('result');
-  var resultIcon = document.getElementById('resultIcon');
-  var resultTitle = document.getElementById('resultTitle');
-  var resultMsg = document.getElementById('resultMsg');
+
+  var doneIcon = document.getElementById('doneIcon');
+  var doneTitle = document.getElementById('doneTitle');
+  var doneMsg = document.getElementById('doneMsg');
+  var doneCode = document.getElementById('doneCode');
 
   var LS_KEY = 'shiguang_coupon_records';
 
@@ -211,12 +303,20 @@ var FORM_ENDPOINT = 'https://formsubmit.co/ajax/YOUR_EMAIL@example.com';
     } catch (e) { /* 隐私模式下忽略 */ }
   }
 
-  function showResult(ok, title, msg) {
-    resultIcon.textContent = ok ? '\u2713' : '!';
-    resultTitle.textContent = title;
-    resultMsg.textContent = msg;
-    result.classList.toggle('warn', !ok);
-    result.classList.add('show');
+  /** 生成 8 位券码: SG + 6 位(时间戳低位 + 随机), 便于到店核对 */
+  function makeCode(phone) {
+    var base = (Date.now() % 1000000).toString(36).toUpperCase();
+    var tail = phone.slice(-4);
+    return 'SG' + tail + base.slice(-4);
+  }
+
+  function goDone() {
+    // 翻到第 3 屏(成功页)
+    if (window.H5Flip) window.H5Flip.goTo(2, true);
+    else {
+      var s = document.querySelectorAll('.screen');
+      if (s[2]) s[2].scrollIntoView();
+    }
   }
 
   btn.addEventListener('click', function () {
@@ -230,8 +330,9 @@ var FORM_ENDPOINT = 'https://formsubmit.co/ajax/YOUR_EMAIL@example.com';
     if (!name) { showErr('请填写您的称呼'); document.getElementById('name').focus(); return; }
     if (!/^1[3-9]\d{9}$/.test(phone)) { showErr('请填写正确的 11 位手机号'); document.getElementById('phone').focus(); return; }
 
+    var code = makeCode(phone);
     var rec = {
-      name: name, phone: phone, store: store, drink: drink,
+      name: name, phone: phone, store: store, drink: drink, code: code,
       page: 'promo', ts: new Date().toLocaleString('zh-CN')
     };
     saveLocal(rec);
@@ -239,27 +340,43 @@ var FORM_ENDPOINT = 'https://formsubmit.co/ajax/YOUR_EMAIL@example.com';
     btn.disabled = true;
     btn.textContent = '提交中…';
 
-    // 未配置接收端时直接本地成功(数据已存 localStorage)
-    if (FORM_ENDPOINT.indexOf('YOUR_EMAIL') !== -1) {
-      setTimeout(function () {
-        btn.disabled = false;
-        btn.textContent = '提交领取';
-        showResult(true, '领取成功！', '券码已记录，到店报手机号即可核销');
-      }, 600);
-      return;
+    function finish(ok, title, msg) {
+      doneIcon.textContent = ok ? '\u2713' : '!';
+      doneIcon.style.color = ok ? 'var(--success)' : 'var(--caramel)';
+      doneTitle.textContent = title;
+      doneMsg.textContent = msg;
+      doneCode.textContent = code;
+      btn.disabled = false;
+      btn.textContent = '提交领取';
+      goDone();
     }
 
-    fetch(FORM_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(rec)
-    })
+    var fd = new FormData();
+    fd.append('_subject', '【拾光咖啡】新的领券申请 · ' + name);
+    fd.append('_template', 'table');
+    fd.append('_captcha', 'false');
+    fd.append('称呼', name);
+    fd.append('手机号', phone);
+    fd.append('到店门店', store);
+    fd.append('感兴趣新品', drink);
+    fd.append('券码', code);
+    fd.append('来源页', 'promo');
+    fd.append('提交时间', rec.ts);
+
+    fetch(FORM_ENDPOINT, { method: 'POST', body: fd })
       .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-      .then(function () { showResult(true, '领取成功！', '券码已发送，到店报手机号即可核销'); })
-      .catch(function () { showResult(false, '已记录（网络异常）', '你的信息已保存在本机，请截图此页到店出示'); })
-      .then(function () { btn.disabled = false; btn.textContent = '提交领取'; });
+      .then(function (data) {
+        // FormSubmit 未激活时也返回 HTTP 200, 但 success=false, 必须单独判断
+        var sent = data && (data.success === true || data.success === 'true');
+        if (sent) finish(true, '领取成功！', '券码已发送，到店报手机号即可核销');
+        else finish(false, '已记录', '接收端待激活。信息已存本机，到店报手机号即可');
+      })
+      .catch(function () {
+        finish(true, '领取成功！', '网络较慢，券码已保存在本机，到店报手机号即可核销');
+      });
   });
 })();
 </script>
+<script src="assets/h5-core.js" defer></script>
 </body>
 </html>

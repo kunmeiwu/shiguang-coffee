@@ -1,0 +1,250 @@
+/* ============================================================
+   拾光咖啡 H5 · 通用核心样式  (v2 · 翻页版)
+   ------------------------------------------------------------
+   架构 (关键变更):
+     旧: #page 是 9:16 的「盒子」, 里面是一个长网页靠内部滚动阅读
+         → 内容高达 1.5 ~ 4.7 屏, 即所谓「单个长页面」
+     新: #page 是 9:16 的「舞台」, 内部 .h5-scroll 一屏一页翻动
+         → 每个 .screen 恒等于 1 个 9:16 页面, 页数 = 屏数
+
+   1) 9:16 竖屏舞台 + 翻页容器 + 每屏精确 9:16
+   2) 翻页指示器 / 下滑引导 / 横屏提示
+   3) 背景音乐播放器
+   本文件必须在各页自身 <style> 之后引入, 以便覆盖页面默认布局
+   ============================================================ */
+
+:root{
+  --vh: 100vh;
+  --h5-frame: #0B0705;
+  --h5-navh: 0px;          /* 由 h5-core.js 实测导航高度后写入 */
+}
+@supports (height: 100dvh){
+  :root{ --vh: 100dvh; }
+}
+
+/* ==================== 1. 9:16 舞台 ==================== */
+html, body{ height:100%; }
+
+body{
+  margin:0;
+  background:
+    radial-gradient(120% 78% at 50% 0%, #1B100A 0%, #0B0705 60%),
+    #0B0705;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+/* 舞台: 宽高由「视口宽高 + 9:16 约束」推导, 二者互为约束故恒为精确 9:16。
+   注意 overflow:hidden —— 它本身不再滚动, 滚动交给 .h5-scroll */
+#page{
+  position:relative;
+  max-width:none !important;
+  margin:0 !important;
+  width:  min(100vw, calc(var(--vh) * 9 / 16));
+  height: min(var(--vh), calc(100vw * 16 / 9));
+  overflow:hidden;              /* 关键: 舞台不滚动 */
+  container-type:size;          /* 提供 cqi/cqh, 供页面内部做等比适配 */
+  box-shadow:
+    0 0 0 1px rgba(201,162,39,.14),
+    0 34px 90px -22px rgba(0,0,0,.95);
+}
+
+/* ==================== 2. 翻页容器 ==================== */
+/* 一屏一页: CSS scroll-snap 原生实现, 无需 JS 也能翻页; JS 仅做增强 */
+.h5-scroll{
+  position:absolute;
+  inset:0;
+  overflow-y:auto;
+  overflow-x:hidden;
+  scroll-snap-type:y mandatory;
+  overscroll-behavior:contain;      /* 阻止橡皮筋 / 下拉刷新 */
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  scroll-behavior:auto;
+}
+.h5-scroll::-webkit-scrollbar{ display:none; }
+
+/* 单个 9:16 页面: 高度恒等于舞台高度, 即恒为精确 9:16。
+   padding-top 让内容避开顶部覆盖式导航 */
+.screen{
+  position:relative;
+  height:100%;
+  box-sizing:border-box;
+  scroll-snap-align:start;
+  scroll-snap-stop:always;          /* 一次手势只翻一页, 不跳页 */
+  overflow:hidden;                  /* 内容超出即裁切, 绝不出现半屏 */
+  padding-top:var(--h5-navh, 0px);
+  display:flex;
+  flex-direction:column;
+}
+
+/* 导航: 覆盖层, 不占据翻页高度, 任何一屏都在同一位置 */
+.nav{
+  position:absolute !important;
+  top:0; left:0; right:0;
+  z-index:60;
+}
+#page > .nav{ position:absolute; }
+
+/* 内容自适应兜底: 由 h5-core.js 实测溢出后逐级加类。
+   这两条对所有页面生效 —— 先去掉底部内边距(纯装饰), 再整体收紧。
+   页面可自行给出更强的 .is-tight / .is-tighter 规则覆盖之。 */
+.screen.is-tight{ padding-bottom:0; }
+.screen.is-tighter{ padding-bottom:0; }
+
+/* 舞台两侧氛围光(仅在视口比 9:16 更宽时可见) */
+@media (min-aspect-ratio: 9/16){
+  body::before{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:radial-gradient(58% 46% at 50% 50%, rgba(224,122,63,.075), transparent 72%);
+  }
+  #page{ z-index:1; }
+}
+
+/* ==================== 3. 翻页指示器 ==================== */
+.h5-dots{
+  position:absolute;
+  right:9px; top:50%;
+  transform:translateY(-50%);
+  z-index:70;
+  display:flex; flex-direction:column; align-items:center; gap:7px;
+  pointer-events:none;
+}
+.h5-dots i{
+  display:block;
+  width:5px; height:5px;
+  border-radius:999px;
+  background:rgba(245,233,218,.24);
+  box-shadow:0 0 0 1px rgba(0,0,0,.28);
+  transition:height .34s cubic-bezier(.2,.7,.3,1), background .34s ease, box-shadow .34s ease;
+}
+.h5-dots i.on{
+  height:15px;
+  background:#E3C572;
+  box-shadow:0 0 9px rgba(227,197,114,.7);
+}
+/* 只有 1 屏的页面不显示指示器 */
+.h5-dots.single{ display:none; }
+
+/* ==================== 4. 下滑引导 ==================== */
+.h5-hint{
+  position:absolute;
+  left:50%; bottom:calc(20px + env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  z-index:5;
+  display:flex; flex-direction:column; align-items:center; gap:5px;
+  color:#8A6E56; font-size:11px; letter-spacing:.3em;
+  pointer-events:none;
+  transition:opacity .45s ease;
+}
+.h5-hint.hide{ opacity:0; }
+.h5-hint svg{ animation:h5HintBounce 1.9s ease-in-out infinite; }
+@keyframes h5HintBounce{
+  0%,100%{ transform:translateY(0); opacity:.45; }
+  50%    { transform:translateY(6px); opacity:1; }
+}
+
+/* ==================== 5. 横屏提示 ==================== */
+.h5-rotate{
+  position:fixed; inset:0; z-index:99999;
+  display:none;
+  flex-direction:column; align-items:center; justify-content:center; gap:18px;
+  background:rgba(11,7,5,.97);
+  color:#E3C572;
+  font-family:"PingFang SC","Microsoft YaHei",-apple-system,sans-serif;
+  font-size:14px; letter-spacing:.16em;
+  text-align:center;
+}
+.h5-rotate svg{ animation:h5Rotate 2.2s ease-in-out infinite; }
+@keyframes h5Rotate{
+  0%,40%{ transform:rotate(0deg); }
+  60%,100%{ transform:rotate(90deg); }
+}
+/* 仅手机横屏(高度很小)时提示; 桌面宽屏不触发 */
+@media (orientation:landscape) and (max-height:520px){
+  .h5-rotate{ display:flex; }
+}
+
+/* ==================== 6. 背景音乐 ==================== */
+.h5-bgm{
+  position:fixed;
+  z-index:9999;
+  width:42px; height:42px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:50%;
+  background:rgba(38,22,14,.74);
+  border:1px solid rgba(201,162,39,.38);
+  box-shadow:0 6px 20px -6px rgba(0,0,0,.9);
+  -webkit-backdrop-filter:blur(10px);
+  backdrop-filter:blur(10px);
+  color:#E3C572;
+  cursor:pointer;
+  padding:0;
+  transition:opacity .28s ease, transform .18s ease;
+  -webkit-tap-highlight-color:transparent;
+  opacity:0;
+  pointer-events:none;
+}
+.h5-bgm.ready{ opacity:1; pointer-events:auto; }
+.h5-bgm:active{ transform:scale(.88); }
+
+.h5-bgm svg{ width:19px; height:19px; display:block; }
+
+/* 内联模式: 停靠在页面指定插槽内(如首页导航右上角), 视觉上更收敛 */
+.h5-bgm.inline{
+  position:relative;
+  width:30px; height:30px;
+  background:rgba(201,162,39,.10);
+  border-color:rgba(201,162,39,.30);
+  box-shadow:none;
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+  flex:0 0 auto;
+}
+.h5-bgm.inline svg{ width:15px; height:15px; }
+/* 视觉尺寸不变, 但把触摸热区扩大到约 46px, 保证可用性 */
+.h5-bgm.inline::before{
+  content:""; position:absolute; inset:-8px; border-radius:50%;
+}
+
+/* 播放中: 音符图标轻微脉动 */
+.h5-bgm.playing .h5-bgm-icon{ animation:h5BgmPulse 1.7s ease-in-out infinite; }
+@keyframes h5BgmPulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.14); } }
+
+/* 暂停中: 图标变暗 + 呼吸, 提示可点击 */
+.h5-bgm:not(.playing){ color:#9A7B55; border-color:rgba(201,162,39,.22); }
+.h5-bgm:not(.playing)::after{
+  content:""; position:absolute; inset:-1px; border-radius:50%;
+  border:1px solid rgba(201,162,39,.5);
+  animation:h5BgmRing 1.9s ease-out infinite;
+}
+@keyframes h5BgmRing{
+  0%{ transform:scale(1); opacity:.85; }
+  100%{ transform:scale(1.55); opacity:0; }
+}
+
+/* 首次进入的邀请气泡 */
+.h5-bgm-tip{
+  position:fixed; z-index:9998;
+  display:flex; align-items:center; gap:6px;
+  padding:7px 13px; border-radius:999px;
+  background:rgba(38,22,14,.86);
+  border:1px solid rgba(201,162,39,.3);
+  -webkit-backdrop-filter:blur(10px);
+  backdrop-filter:blur(10px);
+  color:#E3C572; font-size:12px; letter-spacing:.05em;
+  white-space:nowrap;
+  font-family:"PingFang SC","Microsoft YaHei",-apple-system,sans-serif;
+  opacity:0; transform:translateX(8px);
+  transition:opacity .4s ease, transform .4s ease;
+  pointer-events:none;
+}
+.h5-bgm-tip.show{ opacity:1; transform:translateX(0); }
+
+@media (prefers-reduced-motion: reduce){
+  .h5-bgm, .h5-bgm-tip, .h5-bgm-icon, .h5-hint svg, .h5-rotate svg{ animation:none !important; }
+  .h5-bgm{ transition:opacity .2s !important; }
+  .h5-scroll{ scroll-behavior:auto !important; }
+}
