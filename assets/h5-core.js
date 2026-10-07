@@ -11,10 +11,16 @@
 (function () {
   'use strict';
 
-  var SRC = 'assets/bgm-cafe.mp3';
+  var SRC = 'assets/bgm-cafe-64k.mp3';
   var PREF_KEY = 'shiguang_bgm_on';
   var VOLUME = 0.42;          // 背景音乐不喧宾夺主
   var FADE_MS = 1100;
+  /* 环绕编码保护带(秒) —— 音频文件布局 = [前导 TRIM] + [64s 循环] + [后置 TRIM]。
+     MP3 是 MDCT 交叠变换, 首帧无左侧上下文 / 末帧无右侧上下文, 直接在循环点
+     编解码会产生可闻断点(实测接缝跳变 0.046, 超过全曲 99.9 分位 0.027)。
+     把编解码边界推到循环区之外后, 接缝跳变降至 0.004, 且体积减半。
+     必须与 tools/build-bgm.py 的 TRIM 保持一致; 若换回普通音频文件请设为 0。 */
+  var WRAP_TRIM = 2.0;
 
   var stage = document.getElementById('page') || document.body;
   // 页面可用 [data-bgm-slot] 指定音乐按钮停靠位置(如首页导航右上角);
@@ -195,6 +201,16 @@
     }
   }
 
+  /* 环绕文件: 循环区起点 */
+  function playFrom() { return WRAP_TRIM; }
+
+  /* 环绕文件: 循环区终点(末尾保护带之前)。
+     若文件异常偏短, 退回整段循环, 避免 loopStart >= loopEnd 导致无声。 */
+  function loopEndOf(duration) {
+    var le = duration - WRAP_TRIM;
+    return le > WRAP_TRIM + 1 ? le : duration;
+  }
+
   function startWebAudio() {
     var ctx = ensureCtx();
     if (!ctx) return Promise.reject(new Error('no webaudio'));
@@ -208,25 +224,61 @@
         srcNode = ctx.createBufferSource();
         srcNode.buffer = buf;
         srcNode.loop = true;                 // 采样级无缝循环
-        srcNode.loopStart = 0;
-        srcNode.loopEnd = buf.duration;
+        // 只循环中间 64s: 前后保护带的编解码边界帧不进入循环区, 故接缝干净
+        var ls = playFrom();
+        var le = loopEndOf(buf.duration);
+        srcNode.loopStart = ls;
+        srcNode.loopEnd = le;
         srcNode.connect(gainNode);
-        srcNode.start(0);
+        srcNode.start(0, ls);                // 直接落在循环区起点, 跳过前导保护带
         fadeTo(ctx, VOLUME);
       });
     });
   }
 
-  /* ---------------- <audio> 降级 ---------------- */
+  /* ---------------- <audio> 降级 ----------------
+     不能直接用 <audio loop>: 那会循环整个 68s 文件(含前后保护带),
+     接缝处会听到重复段落。改为手动看护循环区间。 */
+  var elGuard = 0;
+
+  function elLoopStart() {
+    if (!audioEl) return;
+    var d = audioEl.duration;
+    try {
+      audioEl.currentTime = (isFinite(d) && d > WRAP_TRIM * 2) ? WRAP_TRIM : 0;
+    } catch (e) {}
+  }
+
+  function guardElementLoop() {
+    elGuard = 0;
+    if (!playing || !audioEl) return;
+    var d = audioEl.duration;
+    if (isFinite(d) && d > WRAP_TRIM * 2) {
+      var end = d - WRAP_TRIM;
+      // 越过后置保护带, 或因 seek 落回前导区 -> 拉回循环起点
+      if (audioEl.currentTime >= end || audioEl.currentTime < WRAP_TRIM - 0.3) elLoopStart();
+    }
+    elGuard = requestAnimationFrame(guardElementLoop);
+  }
+
   function startElement() {
     if (!audioEl) {
       audioEl = new Audio();
       audioEl.src = SRC;
-      audioEl.loop = true;
+      audioEl.loop = false;                 // 手动限定循环区间, 见上
       audioEl.preload = 'auto';
       audioEl.volume = 0;
+      audioEl.addEventListener('loadedmetadata', elLoopStart);
+      // 后台标签页中 rAF 会被节流, 用 ended 兜底续播
+      audioEl.addEventListener('ended', function () {
+        if (!playing) return;
+        elLoopStart();
+        audioEl.play().catch(function () {});
+      });
     }
     return audioEl.play().then(function () {
+      elLoopStart();
+      if (!elGuard) elGuard = requestAnimationFrame(guardElementLoop);
       // 线性淡入
       var steps = 24, i = 0;
       var timer = setInterval(function () {
@@ -269,6 +321,7 @@
         if (node) { try { node.stop(); } catch (e) {} }
       }, FADE_MS + 60);
     }
+    if (elGuard) { cancelAnimationFrame(elGuard); elGuard = 0; }
     if (audioEl) {
       var el = audioEl;
       var from = el.volume, steps = 20, i = 0;
@@ -348,6 +401,9 @@
         ctxState: actx ? actx.state : null,
         ctxTime: actx ? actx.currentTime : null,
         loop: srcNode ? srcNode.loop : (audioEl ? audioEl.loop : null),
+        loopStart: srcNode ? Math.round(srcNode.loopStart * 100) / 100 : null,
+        loopEnd: srcNode ? Math.round(srcNode.loopEnd * 100) / 100 : null,
+        trim: WRAP_TRIM,
         bufferDuration: buffer ? Math.round(buffer.duration * 100) / 100 : null,
         volume: gainNode ? Math.round(gainNode.gain.value * 1000) / 1000 : (audioEl ? audioEl.volume : null),
         elTime: audioEl ? Math.round(audioEl.currentTime * 100) / 100 : null
